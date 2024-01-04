@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 
 plugins {
     id("com.android.application")
@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.mvisampleapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.mvisampleapp"

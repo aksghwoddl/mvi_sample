@@ -1,16 +1,9 @@
 package com.example.mvisampleapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.mvisampleapp.ui.list.ListScreen
-import com.example.mvisampleapp.ui.main.MainScreen
+import com.example.mvisampleapp.ui.circuit.CircuitActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 object NavDestination {
@@ -22,7 +15,15 @@ object NavDestination {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
+        Intent(this, CircuitActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }.also {
+            startActivity(it)
+        }
+
+        finish()
+        /*setContent {
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = NavDestination.MAIN) {
                 composable(NavDestination.MAIN) {
@@ -40,6 +41,6 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
-        }
+        }*/
     }
 }

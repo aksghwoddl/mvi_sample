@@ -8,15 +8,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.domain.usecase.AddUserUseCase
+import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
 import com.example.mvisampleapp.ui.circuit.main.model.MainModel
 import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
-import com.example.mvisampleapp.ui.main.model.MainScreenElements
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuitx.effects.rememberImpressionNavigator
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 private const val TAG = "MainScreenPresenter"
@@ -55,7 +57,9 @@ class MainScreenPresenter @AssistedInject constructor(
                         name = mainModel.name,
                         age = mainModel.age.toInt(),
                     )
-
+                    scope.launch(Dispatchers.IO) {
+                        addUserUseCase(user = user)
+                    }
                     mainModel = mainModel.copy(
                         name = "",
                         age = "",
@@ -63,9 +67,14 @@ class MainScreenPresenter @AssistedInject constructor(
                 }
 
                 is MainScreen.State.MainScreenEvent.ClickListButton -> {
-
+                    rememberImpressionNavigator.goTo(ListScreen)
                 }
             }
         }
+    }
+
+    @AssistedFactory
+    interface MainScreenPresenterAssistedFactory {
+        fun create(navigator: Navigator): MainScreenPresenter
     }
 }
