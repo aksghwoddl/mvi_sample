@@ -1,13 +1,16 @@
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 android {
     namespace = "com.example.mvisampleapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.mvisampleapp"
@@ -97,4 +100,10 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$navVersion")
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+
+    // Circuit
+    val circuitVersion = "0.17.1"
+    implementation("com.slack.circuit:circuit-foundation:$circuitVersion")
+    implementation("com.slack.circuit:circuitx-android:$circuitVersion")
+    implementation("com.slack.circuit:circuitx-effects:$circuitVersion")
 }
