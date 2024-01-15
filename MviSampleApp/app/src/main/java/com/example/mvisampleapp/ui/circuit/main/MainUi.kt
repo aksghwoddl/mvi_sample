@@ -74,9 +74,6 @@ fun Main(
                         state.mainModel.run {
                             if (name.isNotEmpty() && age.isNotEmpty()) {
                                 state.eventSink(MainScreen.State.MainScreenEvent.ClickAddUserButton)
-                                scope.launch {
-                                    snackBarHostState.showSnackbar("정상적으로 저장되었습니다!")
-                                }
                             } else {
                                 scope.launch {
                                     snackBarHostState.showSnackbar("깂을 확인해주세요!")

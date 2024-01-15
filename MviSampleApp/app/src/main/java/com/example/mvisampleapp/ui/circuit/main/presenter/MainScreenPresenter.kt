@@ -20,6 +20,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val TAG = "MainScreenPresenter"
 
@@ -52,18 +53,20 @@ class MainScreenPresenter @AssistedInject constructor(
                 }
 
                 is MainScreen.State.MainScreenEvent.ClickAddUserButton -> {
-                    val user = User(
-                        index = null,
-                        name = mainModel.name,
-                        age = mainModel.age.toInt(),
-                    )
                     scope.launch(Dispatchers.IO) {
+                        val user = User(
+                            index = null,
+                            name = mainModel.name,
+                            age = mainModel.age.toInt(),
+                        )
                         addUserUseCase(user = user)
+                        withContext(Dispatchers.Main) {
+                            mainModel = mainModel.copy(
+                                name = "",
+                                age = "",
+                            )
+                        }
                     }
-                    mainModel = mainModel.copy(
-                        name = "",
-                        age = "",
-                    )
                 }
 
                 is MainScreen.State.MainScreenEvent.ClickListButton -> {

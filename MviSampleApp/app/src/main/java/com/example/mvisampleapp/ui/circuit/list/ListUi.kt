@@ -50,7 +50,7 @@ fun List(
             },
         )
     }
-
+    state.eventSink(ListScreen.State.ListScreenEvent.UpdateUserList)
     Scaffold(
         snackbarHost = {
             SnackbarHost(snackBarHostState)

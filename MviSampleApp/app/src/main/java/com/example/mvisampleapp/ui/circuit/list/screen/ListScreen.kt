@@ -15,7 +15,7 @@ object ListScreen : Screen {
     ) : CircuitUiState {
         sealed interface ListScreenEvent : CircuitUiEvent {
             object ClickPreviousButton : ListScreenEvent
-            data class UpdateUserList(val userList: List<User>) : ListScreenEvent
+            object UpdateUserList : ListScreenEvent
             data class ClickUserItem(val user: User) : ListScreenEvent
             data class ClickDeleteButton(val user: User) : ListScreenEvent
         }
