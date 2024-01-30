@@ -36,8 +36,6 @@ import org.junit.runner.Description
  * - 코루틴을 테스트 할 때 좀 더 자세한 제어를 하고 싶다면 `StandardTestDispatcher`을, 실행 순서와 상관없으며 간단하다면
  * `UnconfinedTestDispatcher`을 사용 한다.
  * - [참고](https://craigrussell.io/2022/01/19/comparing-standardtestdispatcher-and-unconfinedtestdispatcher)
- * @author beemo
- * @since 2022/08/11
  */
 
 class MainDispatcherRule(
