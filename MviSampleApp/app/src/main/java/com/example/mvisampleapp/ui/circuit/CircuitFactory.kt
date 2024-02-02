@@ -2,7 +2,6 @@ package com.example.mvisampleapp.ui.circuit
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.mvisampleapp.ui.circuit.main.presenter.MainScreenPresenter
 import com.slack.circuit.runtime.CircuitContext
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
@@ -23,7 +22,7 @@ inline fun <reified T : Screen, S : CircuitUiState> createCircuitScreenUiFactory
 }
 
 inline fun <reified T : Screen, S : CircuitUiState> createCircuitScreenPresenterFactory(
-    crossinline presenter: (T, Navigator, CircuitContext) -> MainScreenPresenter,
+    crossinline presenter: (T, Navigator, CircuitContext) -> Presenter<S>,
 ): Presenter.Factory {
     return Presenter.Factory { screen, navigator, context ->
         when (screen) {

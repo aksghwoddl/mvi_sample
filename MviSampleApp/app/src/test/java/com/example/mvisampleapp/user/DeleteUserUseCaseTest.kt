@@ -6,6 +6,7 @@ import com.example.mvisampleapp.data.repository.UserRepository
 import com.example.mvisampleapp.domain.usecase.AddUserUseCase
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
+import com.example.mvisampleapp.repository.FakeUserRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
@@ -16,7 +17,7 @@ private const val TAG = "DeleteUserUseCaseTest"
 class DeleteUserUseCaseTest : BaseTest() {
 
     @MockK
-    private lateinit var userRepository: UserRepository
+    private lateinit var userRepository: FakeUserRepository
     private lateinit var deleteUserUseCase: DeleteUserUseCase
     private lateinit var getUserListUseCase: GetUserListUseCase
     private lateinit var addUserListUserCase: AddUserUseCase
@@ -55,5 +56,6 @@ class DeleteUserUseCaseTest : BaseTest() {
 
     override fun tearDown() {
         super.tearDown()
+        userRepository.closeDatabase()
     }
 }

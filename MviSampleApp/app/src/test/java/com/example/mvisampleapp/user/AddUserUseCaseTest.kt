@@ -5,6 +5,7 @@ import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.data.repository.UserRepository
 import com.example.mvisampleapp.domain.usecase.AddUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
+import com.example.mvisampleapp.repository.FakeUserRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
@@ -13,7 +14,7 @@ import org.junit.Test
 class AddUserUseCaseTest : BaseTest() {
 
     @MockK
-    private lateinit var userRepository: UserRepository
+    private lateinit var userRepository: FakeUserRepository
     private lateinit var addUserUseCase: AddUserUseCase
     private lateinit var getUserListUseCase: GetUserListUseCase
 
@@ -39,5 +40,6 @@ class AddUserUseCaseTest : BaseTest() {
 
     override fun tearDown() {
         super.tearDown()
+        userRepository.closeDatabase()
     }
 }
