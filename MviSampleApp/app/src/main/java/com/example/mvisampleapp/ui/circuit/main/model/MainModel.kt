@@ -4,8 +4,9 @@ import androidx.compose.runtime.Stable
 
 @Stable
 data class MainModel(
-    val name: String,
-    val age: String,
+    val name: String = "",
+    val age: String = "",
+    val snackBarState: SnackBarState = SnackBarState()
 ) {
     companion object {
         val placeHolder = MainModel(
@@ -14,3 +15,8 @@ data class MainModel(
         )
     }
 }
+
+@Stable
+data class SnackBarState(
+    val message: String = ""
+)

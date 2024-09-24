@@ -6,6 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import com.example.mvisampleapp.common.runSuspendCatching
+import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.ui.circuit.list.model.ListModel
@@ -18,8 +20,10 @@ import com.slack.circuitx.effects.rememberImpressionNavigator
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val TAG = "ListScreenPresenter"
 
@@ -38,43 +42,56 @@ class ListScreenPresenter @AssistedInject constructor(
         }
 
         val scope = rememberCoroutineScope()
+
         return ListScreen.State(
             listModel = listModel,
         ) { event ->
             when (event) {
-                is ListScreen.State.ListScreenEvent.ClickPreviousButton -> {
+                is ListScreen.State.ListScreenEvent.OnClickPreviousButton -> {
                     rememberImpressionNavigator.goTo(MainScreen)
                 }
 
-                is ListScreen.State.ListScreenEvent.UpdateUserList -> {
+                is ListScreen.State.ListScreenEvent.OnUpdateUserList -> {
                     scope.launch {
-                        getUserListUseCase().collect { userList ->
-                            listModel = listModel.copy(
-                                userList = userList,
-                            )
-                        }
+                        listModel = listModel.copy(
+                            userList = getUserList(),
+                        )
                     }
                 }
 
-                is ListScreen.State.ListScreenEvent.ClickUserItem -> {
+                is ListScreen.State.ListScreenEvent.OnClickUserItem -> {
                     listModel = listModel.copy(
                         selectedUser = event.user,
                     )
                 }
 
-                is ListScreen.State.ListScreenEvent.ClickDeleteButton -> {
+                is ListScreen.State.ListScreenEvent.OnClickDeleteButton -> {
                     scope.launch {
-                        deleteUserUseCase(event.user)
-                        getUserListUseCase().collect { userList ->
-                            listModel = listModel.copy(
-                                userList = userList,
-                                selectedUser = null,
-                            )
+                        withContext(Dispatchers.IO) {
+                            deleteUserUseCase(event.user)
                         }
+                        listModel = listModel.copy(
+                            userList = getUserList(),
+                            selectedUser = null,
+                        )
                     }
                 }
             }
         }
+    }
+
+    private suspend fun getUserList(): List<User> {
+        runSuspendCatching {
+            withContext(Dispatchers.IO) {
+                getUserListUseCase()
+            }
+        }.onSuccess { flow ->
+            return flow.first()
+        }.onFailure { throwable ->
+            Log.d(TAG, "getUserList: fail  => ${throwable.message}")
+            return emptyList()
+        }
+        return emptyList()
     }
 
     @AssistedFactory

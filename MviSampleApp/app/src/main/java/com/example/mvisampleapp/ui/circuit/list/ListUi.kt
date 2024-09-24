@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,15 +22,20 @@ import com.example.mvisampleapp.ui.common.components.FunctionButton
 import com.example.mvisampleapp.ui.common.dialog.CommonDialog
 import com.example.mvisampleapp.ui.feature.list.components.UserListColumn
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun List(
     state: ListScreen.State,
     modifier: Modifier,
 ) {
-    val snackBarHostState = SnackbarHostState()
+    val snackBarHostState = remember {
+        SnackbarHostState()
+    }
     var showDeleteDialog by remember {
         mutableStateOf(false)
+    }
+
+    LaunchedEffect(Unit) {
+        state.eventSink(ListScreen.State.ListScreenEvent.OnUpdateUserList)
     }
 
     if (showDeleteDialog) {
@@ -41,7 +46,7 @@ fun List(
             dialogText = "유저를 삭제 하시겠습니까?",
             onConfirmClick = {
                 state.listModel.selectedUser?.let { user ->
-                    state.eventSink(ListScreen.State.ListScreenEvent.ClickDeleteButton(user))
+                    state.eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteButton(user))
                     showDeleteDialog = false
                 }
             },
@@ -50,14 +55,15 @@ fun List(
             },
         )
     }
-    state.eventSink(ListScreen.State.ListScreenEvent.UpdateUserList)
     Scaffold(
         snackbarHost = {
             SnackbarHost(snackBarHostState)
         },
         content = { paddingValues ->
             Column(
-                modifier = modifier.fillMaxSize().padding(paddingValues = paddingValues),
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(paddingValues = paddingValues),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
@@ -65,7 +71,7 @@ fun List(
                     modifier = modifier,
                     list = state.listModel.userList,
                 ) { item ->
-                    state.eventSink(ListScreen.State.ListScreenEvent.ClickUserItem(item))
+                    state.eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(item))
                     showDeleteDialog = true
                 }
 
@@ -73,7 +79,7 @@ fun List(
                     text = "이전화면",
                     modifier = modifier,
                 ) {
-                    state.eventSink(ListScreen.State.ListScreenEvent.ClickPreviousButton)
+                    state.eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
                 }
             }
         },
