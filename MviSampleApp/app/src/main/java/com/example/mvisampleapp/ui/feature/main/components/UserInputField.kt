@@ -1,4 +1,4 @@
-package com.example.mvisampleapp.ui.main.components
+package com.example.mvisampleapp.ui.feature.main.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

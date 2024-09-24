@@ -1,4 +1,4 @@
-package com.example.mvisampleapp.ui.list.model
+package com.example.mvisampleapp.ui.feature.list.model
 
 import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.ui.base.BaseEvent
@@ -11,10 +11,10 @@ class ListScreenElements {
     ) : BaseState
 
     sealed interface ListScreenEvent : BaseEvent {
-        object ClickPreviousButton : ListScreenEvent
-        data class UpdateUserList(val userList: List<User>) : ListScreenEvent
-        data class ClickUserItem(val user: User) : ListScreenEvent
-        data class ClickDeleteButton(val user: User) : ListScreenEvent
+        object OnClickPreviousButton : ListScreenEvent
+        data class OnUpdateUserList(val userList: List<User>) : ListScreenEvent
+        data class OnClickUserItem(val user: User) : ListScreenEvent
+        data class OnClickDeleteButton(val user: User) : ListScreenEvent
     }
 
     sealed interface ListScreenEffect {

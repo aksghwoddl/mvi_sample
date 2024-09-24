@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
 import com.example.mvisampleapp.ui.common.components.FunctionButton
 import com.example.mvisampleapp.ui.common.dialog.CommonDialog
-import com.example.mvisampleapp.ui.list.components.UserListColumn
+import com.example.mvisampleapp.ui.feature.list.components.UserListColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

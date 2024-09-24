@@ -1,5 +1,6 @@
-package com.example.mvisampleapp.ui.main
+package com.example.mvisampleapp.ui.feature.main
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +14,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -24,29 +25,31 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.mvisampleapp.ui.NavDestination
 import com.example.mvisampleapp.ui.common.components.FunctionButton
-import com.example.mvisampleapp.ui.main.components.UserInputField
-import com.example.mvisampleapp.ui.main.model.MainScreenElements
-import com.example.mvisampleapp.ui.main.viewmodel.MainViewModel
+import com.example.mvisampleapp.ui.feature.main.components.UserInputField
+import com.example.mvisampleapp.ui.feature.main.model.MainScreenElements
+import com.example.mvisampleapp.ui.feature.main.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 private const val TAG = "MainScreen"
 
 @Composable
 fun MainScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel(),
-    navController: NavController,
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
-    val snackBarHostState = SnackbarHostState()
+    val snackBarHostState = remember {
+        SnackbarHostState()
+    }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         viewModel.run {
             effect.collectLatest { effect ->
                 when (effect) {
                     is MainScreenElements.MainScreenEffect.ShowSnackBar -> { // SnackBar 표시
+                        Log.d(TAG, "MainScreen: recieved ShowSnackBar")
                         snackBarHostState.showSnackbar(effect.message)
                     }
 

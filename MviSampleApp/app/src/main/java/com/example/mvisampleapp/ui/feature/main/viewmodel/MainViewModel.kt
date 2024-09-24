@@ -1,10 +1,11 @@
-package com.example.mvisampleapp.ui.main.viewmodel
+package com.example.mvisampleapp.ui.feature.main.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.domain.usecase.AddUserUseCase
 import com.example.mvisampleapp.ui.base.BaseViewModel
-import com.example.mvisampleapp.ui.main.model.MainScreenElements
+import com.example.mvisampleapp.ui.feature.main.model.MainScreenElements
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -41,6 +42,7 @@ class MainViewModel @Inject constructor(
 
             is MainScreenElements.MainScreenEvent.OnClickAddUserButton -> {
                 if (state.value.name.isEmpty() || state.value.age.isEmpty()) { // 값이 하나라도 비어 있으면 알림 보내기
+                    Log.d("MainViewModel", "MainViewModel: value empty")
                     sendEffect(
                         MainScreenElements.MainScreenEffect.ShowSnackBar(
                             message = "값을 확인 해주세요!"

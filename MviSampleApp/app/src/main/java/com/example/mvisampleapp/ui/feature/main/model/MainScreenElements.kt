@@ -1,4 +1,4 @@
-package com.example.mvisampleapp.ui.main.model
+package com.example.mvisampleapp.ui.feature.main.model
 
 import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.ui.base.BaseEvent
