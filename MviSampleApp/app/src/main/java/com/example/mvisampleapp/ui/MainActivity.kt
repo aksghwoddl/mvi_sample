@@ -1,5 +1,6 @@
 package com.example.mvisampleapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,15 +21,15 @@ object NavDestination {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*Intent(this, CircuitActivity::class.java).apply {
+        Intent(this, CircuitActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }.also {
             startActivity(it)
         }
 
-        finish()*/
-        setContent {
+        finish()
+        /*setContent {
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = NavDestination.MAIN) {
                 composable(NavDestination.MAIN) {
@@ -42,6 +43,6 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
-        }
+        }*/
     }
 }
