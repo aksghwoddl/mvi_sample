@@ -1,15 +1,15 @@
-package com.example.mvisampleapp.ui.list.viewmodel
+package com.example.mvisampleapp.ui.feature.list.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.ui.base.BaseViewModel
-import com.example.mvisampleapp.ui.list.model.ListScreenElements
+import com.example.mvisampleapp.ui.feature.list.model.ListScreenElements
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,11 +31,11 @@ class ListViewModel @Inject constructor(
 
     override fun handleEvent(event: ListScreenElements.ListScreenEvent) {
         when (event) {
-            is ListScreenElements.ListScreenEvent.ClickPreviousButton -> {
+            is ListScreenElements.ListScreenEvent.OnClickPreviousButton -> {
                 sendEffect(ListScreenElements.ListScreenEffect.MoveMainScreen)
             }
 
-            is ListScreenElements.ListScreenEvent.UpdateUserList -> {
+            is ListScreenElements.ListScreenEvent.OnUpdateUserList -> {
                 updateState {
                     it.copy(
                         userList = event.userList,
@@ -43,7 +43,7 @@ class ListViewModel @Inject constructor(
                 }
             }
 
-            is ListScreenElements.ListScreenEvent.ClickUserItem -> {
+            is ListScreenElements.ListScreenEvent.OnClickUserItem -> {
                 updateState {
                     it.copy(
                         selectedUser = event.user,
@@ -52,7 +52,7 @@ class ListViewModel @Inject constructor(
                 sendEffect(ListScreenElements.ListScreenEffect.ShowDeleteDialog)
             }
 
-            is ListScreenElements.ListScreenEvent.ClickDeleteButton -> {
+            is ListScreenElements.ListScreenEvent.OnClickDeleteButton -> {
                 handleSideEffect(ListScreenElements.ListScreenSideEffect.DeleteUser(event.user))
                 updateState {
                     it.copy(
@@ -66,18 +66,11 @@ class ListViewModel @Inject constructor(
     private fun handleSideEffect(sideEffect: ListScreenElements.ListScreenSideEffect) {
         when (sideEffect) {
             is ListScreenElements.ListScreenSideEffect.GetUserList -> {
-                viewModelScope.launch {
-                    getUserListUseCase().collect { result ->
-                        handleEvent(ListScreenElements.ListScreenEvent.UpdateUserList(result))
-                    }
-                }
+                getUserList()
             }
 
             is ListScreenElements.ListScreenSideEffect.DeleteUser -> {
-                viewModelScope.launch {
-                    deleteUserUseCase(sideEffect.user)
-                    handleSideEffect(ListScreenElements.ListScreenSideEffect.GetUserList)
-                }
+                deleteUser(user = sideEffect.user)
             }
         }
     }
@@ -85,6 +78,21 @@ class ListViewModel @Inject constructor(
     private fun sendEffect(effect: ListScreenElements.ListScreenEffect) {
         viewModelScope.launch {
             _effect.emit(effect)
+        }
+    }
+
+    private fun getUserList() {
+        viewModelScope.launch {
+            getUserListUseCase().collect { result ->
+                handleEvent(ListScreenElements.ListScreenEvent.OnUpdateUserList(result))
+            }
+        }
+    }
+
+    private fun deleteUser(user: User) {
+        viewModelScope.launch {
+            deleteUserUseCase(user = user)
+            handleSideEffect(ListScreenElements.ListScreenSideEffect.GetUserList)
         }
     }
 }

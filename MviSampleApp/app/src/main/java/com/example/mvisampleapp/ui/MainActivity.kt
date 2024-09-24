@@ -3,7 +3,13 @@ package com.example.mvisampleapp.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.mvisampleapp.ui.circuit.CircuitActivity
+import com.example.mvisampleapp.ui.feature.list.ListScreen
+import com.example.mvisampleapp.ui.feature.main.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 object NavDestination {
@@ -28,15 +34,11 @@ class MainActivity : ComponentActivity() {
             NavHost(navController = navController, startDestination = NavDestination.MAIN) {
                 composable(NavDestination.MAIN) {
                     MainScreen(
-                        modifier = Modifier,
-                        viewModel = hiltViewModel(),
                         navController = navController,
                     )
                 }
                 composable(NavDestination.LIST) {
                     ListScreen(
-                        modifier = Modifier,
-                        viewModel = hiltViewModel(),
                         navController = navController,
                     )
                 }

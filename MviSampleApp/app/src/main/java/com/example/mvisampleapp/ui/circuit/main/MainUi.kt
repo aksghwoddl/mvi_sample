@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
 import com.example.mvisampleapp.ui.common.components.FunctionButton
-import com.example.mvisampleapp.ui.main.components.UserInputField
+import com.example.mvisampleapp.ui.feature.main.components.UserInputField
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
