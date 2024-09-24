@@ -101,8 +101,13 @@ class ListViewModel @Inject constructor(
 
     private fun deleteUser(user: User) {
         viewModelScope.launch {
-            deleteUserUseCase(user = user)
-            handleSideEffect(ListScreenElements.ListScreenSideEffect.GetUserList)
+            runSuspendCatching {
+                deleteUserUseCase(user = user)
+            }.onSuccess {
+                handleSideEffect(ListScreenElements.ListScreenSideEffect.GetUserList)
+            }.onFailure { throwable ->
+                Log.d(TAG, "deleteUser: fail => ${throwable.message}")
+            }
         }
     }
 }
