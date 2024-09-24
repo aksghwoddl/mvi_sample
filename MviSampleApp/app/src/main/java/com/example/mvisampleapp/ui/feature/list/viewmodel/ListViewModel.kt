@@ -1,6 +1,8 @@
 package com.example.mvisampleapp.ui.feature.list.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.mvisampleapp.common.runSuspendCatching
 import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
@@ -12,6 +14,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "ListViewModel"
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
@@ -83,8 +87,14 @@ class ListViewModel @Inject constructor(
 
     private fun getUserList() {
         viewModelScope.launch {
-            getUserListUseCase().collect { result ->
-                handleEvent(ListScreenElements.ListScreenEvent.OnUpdateUserList(result))
+            runSuspendCatching {
+                getUserListUseCase()
+            }.onSuccess { flow ->
+                flow.collect { result ->
+                    handleEvent(ListScreenElements.ListScreenEvent.OnUpdateUserList(result))
+                }
+            }.onFailure { throwable ->
+                Log.d(TAG, "getUserList : fail => ${throwable.message}")
             }
         }
     }

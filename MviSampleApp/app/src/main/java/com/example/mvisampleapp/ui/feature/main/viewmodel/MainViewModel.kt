@@ -2,6 +2,7 @@ package com.example.mvisampleapp.ui.feature.main.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.mvisampleapp.common.runSuspendCatching
 import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.domain.usecase.AddUserUseCase
 import com.example.mvisampleapp.ui.base.BaseViewModel
@@ -12,6 +13,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "MainViewModel"
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -94,8 +97,13 @@ class MainViewModel @Inject constructor(
 
     private fun addUser(user: User) {
         viewModelScope.launch {
-            addUserUseCase(user)
-            handleEvent(MainScreenElements.MainScreenEvent.OnAddUserSuccess)
+            runSuspendCatching {
+                addUserUseCase(user)
+            }.onSuccess {
+                handleEvent(MainScreenElements.MainScreenEvent.OnAddUserSuccess)
+            }.onFailure { throwable ->
+                Log.d(TAG, "addUser: fail => $throwable")
+            }
         }
     }
 }
