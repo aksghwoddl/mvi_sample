@@ -23,7 +23,7 @@ class MainViewModel @Inject constructor(
 
     override fun handleEvent(event: MainScreenElements.MainScreenEvent) {
         when (event) {
-            is MainScreenElements.MainScreenEvent.SetUserName -> {
+            is MainScreenElements.MainScreenEvent.OnSetUserName -> {
                 updateState {
                     it.copy(
                         name = event.name,
@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(
                 }
             }
 
-            is MainScreenElements.MainScreenEvent.SetUserAge -> {
+            is MainScreenElements.MainScreenEvent.OnSetUserAge -> {
                 updateState {
                     it.copy(
                         age = event.age,
@@ -39,23 +39,39 @@ class MainViewModel @Inject constructor(
                 }
             }
 
-            is MainScreenElements.MainScreenEvent.ClickAddUserButton -> {
-                val user = User(
-                    index = null,
-                    name = state.value.name,
-                    age = state.value.age.toInt(),
-                )
-                handleSideEffect(MainScreenElements.MainScreenSideEffect.AddUser(user))
+            is MainScreenElements.MainScreenEvent.OnClickAddUserButton -> {
+                if (state.value.name.isEmpty() || state.value.age.isEmpty()) { // 값이 하나라도 비어 있으면 알림 보내기
+                    sendEffect(
+                        MainScreenElements.MainScreenEffect.ShowSnackBar(
+                            message = "값을 확인 해주세요!"
+                        )
+                    )
+                } else {
+                    val user = User(
+                        index = null,
+                        name = state.value.name,
+                        age = state.value.age.toInt(),
+                    )
+                    handleSideEffect(MainScreenElements.MainScreenSideEffect.AddUser(user))
+                }
+            }
+
+            is MainScreenElements.MainScreenEvent.OnClickListButton -> {
+                sendEffect(MainScreenElements.MainScreenEffect.MoveListScreen)
+            }
+
+            is MainScreenElements.MainScreenEvent.OnAddUserSuccess -> {
                 updateState {
                     it.copy(
                         name = "",
                         age = "",
                     )
                 }
-            }
-
-            is MainScreenElements.MainScreenEvent.ClickListButton -> {
-                sendEffect(MainScreenElements.MainScreenEffect.MoveListScreen)
+                sendEffect(
+                    MainScreenElements.MainScreenEffect.ShowSnackBar(
+                        message = "정상적으로 저장되었습니다!"
+                    )
+                )
             }
         }
     }
@@ -63,9 +79,7 @@ class MainViewModel @Inject constructor(
     private fun handleSideEffect(effect: MainScreenElements.MainScreenSideEffect) {
         when (effect) {
             is MainScreenElements.MainScreenSideEffect.AddUser -> {
-                viewModelScope.launch {
-                    addUserUseCase(effect.user)
-                }
+                addUser(user = effect.user)
             }
         }
     }
@@ -73,6 +87,13 @@ class MainViewModel @Inject constructor(
     private fun sendEffect(effect: MainScreenElements.MainScreenEffect) {
         viewModelScope.launch {
             _effect.emit(effect)
+        }
+    }
+
+    private fun addUser(user: User) {
+        viewModelScope.launch {
+            addUserUseCase(user)
+            handleEvent(MainScreenElements.MainScreenEvent.OnAddUserSuccess)
         }
     }
 }
