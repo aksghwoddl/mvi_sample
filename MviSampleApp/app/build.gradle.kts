@@ -66,8 +66,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.10.3")
     testImplementation("com.google.dagger:hilt-android-testing:2.49")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0-RC")
-    testImplementation("app.cash.turbine:turbine:0.9.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+    testImplementation("app.cash.turbine:turbine:1.0.0")
 
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -105,4 +105,5 @@ dependencies {
     implementation("com.slack.circuit:circuit-foundation:$circuitVersion")
     implementation("com.slack.circuit:circuitx-android:$circuitVersion")
     implementation("com.slack.circuit:circuitx-effects:$circuitVersion")
+    testImplementation("com.slack.circuit:circuit-test:$circuitVersion")
 }

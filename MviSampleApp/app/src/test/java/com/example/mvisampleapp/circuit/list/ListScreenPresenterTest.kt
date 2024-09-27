@@ -1,0 +1,52 @@
+package com.example.mvisampleapp.circuit.list
+
+import com.example.mvisampleapp.base.BaseTest
+import com.example.mvisampleapp.data.model.entity.User
+import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
+import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
+import com.example.mvisampleapp.ui.circuit.list.presenter.ListScreenPresenter
+import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
+import com.example.mvisampleapp.utils.shouldBe
+import com.slack.circuit.test.FakeNavigator
+import com.slack.circuit.test.test
+import io.mockk.coEvery
+import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runTest
+import org.junit.Test
+
+class ListScreenPresenterTest : BaseTest() {
+    @MockK
+    lateinit var deleteUserUseCase: DeleteUserUseCase
+
+    @MockK
+    lateinit var getUserListUseCase: GetUserListUseCase
+
+    @Test
+    fun `OnClickDeleteUserList Event Test`() = runTest {
+        val user = User(
+            age = 7,
+            name = "테스트"
+        )
+
+        coEvery {
+            getUserListUseCase()
+        } returns flow {
+            emit(listOf(user))
+        }
+
+        ListScreenPresenter(
+            navigator = FakeNavigator(),
+            deleteUserUseCase = deleteUserUseCase,
+            getUserListUseCase = getUserListUseCase
+        ).test {
+            with(awaitItem()) {
+                eventSink(ListScreen.State.ListScreenEvent.OnUpdateUserList)
+                eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(user = user))
+                eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteButton(user = user))
+            }
+
+            awaitItem().listModel.selectedUser shouldBe null
+        }
+    }
+}

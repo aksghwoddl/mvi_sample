@@ -31,9 +31,9 @@ fun Main(
     val snackBarHostState = remember { SnackbarHostState() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    LaunchedEffect(state.mainModel.snackBarState) {
-        if (state.mainModel.snackBarState.message.isNotEmpty()) {
-            snackBarHostState.showSnackbar(message = state.mainModel.snackBarState.message)
+    LaunchedEffect(state.mainModel.alertMessage) {
+        if (state.mainModel.alertMessage.isNotEmpty()) {
+            snackBarHostState.showSnackbar(message = state.mainModel.alertMessage)
             state.eventSink(MainScreen.State.MainScreenEvent.OnShowSnackBar)
         }
     }
