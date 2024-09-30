@@ -6,6 +6,7 @@ import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.ui.circuit.list.presenter.ListScreenPresenter
 import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
+import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
 import com.example.mvisampleapp.utils.shouldBe
 import com.slack.circuit.test.FakeNavigator
 import com.slack.circuit.test.test
@@ -40,13 +41,25 @@ class ListScreenPresenterTest : BaseTest() {
             deleteUserUseCase = deleteUserUseCase,
             getUserListUseCase = getUserListUseCase
         ).test {
-            with(awaitItem()) {
-                eventSink(ListScreen.State.ListScreenEvent.OnUpdateUserList)
-                eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(user = user))
-                eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteButton(user = user))
-            }
+            awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnUpdateUserList)
+            awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(user = user))
+            awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteButton(user = user))
 
             awaitItem().listModel.selectedUser shouldBe null
+        }
+    }
+
+    @Test
+    fun `OnClickPreviousButton Event Test`() = runTest {
+        val navigator = FakeNavigator()
+        ListScreenPresenter(
+            navigator = navigator,
+            deleteUserUseCase = deleteUserUseCase,
+            getUserListUseCase = getUserListUseCase
+        ).test {
+            awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
+
+            navigator.awaitNextScreen() shouldBe MainScreen
         }
     }
 }
