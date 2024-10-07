@@ -42,10 +42,12 @@ class ListScreenPresenterTest : BaseTest() {
             getUserListUseCase = getUserListUseCase
         ).test {
             awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnUpdateUserList)
+            skipItems(2)
             awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(user = user))
             awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteButton(user = user))
-
+            skipItems(4)
             awaitItem().listModel.selectedUser shouldBe null
+            cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
         }
     }
 
@@ -60,6 +62,7 @@ class ListScreenPresenterTest : BaseTest() {
             awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
 
             navigator.awaitNextScreen() shouldBe MainScreen
+            cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
         }
     }
 }

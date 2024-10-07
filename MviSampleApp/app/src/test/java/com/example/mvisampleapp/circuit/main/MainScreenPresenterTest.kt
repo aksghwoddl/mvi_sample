@@ -22,17 +22,16 @@ class MainScreenPresenterTest : BaseTest() {
             navigator = FakeNavigator(),
             addUserUseCase = addUserUseCase
         ).test {
-            with(awaitItem()) {
-                eventSink(MainScreen.State.MainScreenEvent.OnSetUserAge(age = "9"))
-                eventSink(MainScreen.State.MainScreenEvent.OnSetUserName(name = "테스트"))
-                eventSink(MainScreen.State.MainScreenEvent.OnClickAddUserButton)
-            }
+            awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserAge(age = "9"))
+            awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserName(name = "테스트"))
+            awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnClickAddUserButton)
             skipItems(2)
             with(awaitItem()) {
                 mainModel.name shouldBe ""
                 mainModel.age shouldBe ""
                 mainModel.alertMessage shouldBe "정상적으로 값이 저장 되었습니다!"
             }
+            cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
         }
     }
 
@@ -42,14 +41,10 @@ class MainScreenPresenterTest : BaseTest() {
             navigator = FakeNavigator(),
             addUserUseCase = addUserUseCase
         ).test {
-            with(awaitItem()) {
-                eventSink(MainScreen.State.MainScreenEvent.OnSetUserAge(age = "9"))
-                eventSink(MainScreen.State.MainScreenEvent.OnClickAddUserButton)
-            }
-            skipItems(1)
-            with(awaitItem()) {
-                mainModel.alertMessage shouldBe "값을 확인 해주세요!"
-            }
+            awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserAge(age = "9"))
+            awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnClickAddUserButton)
+            awaitItem().mainModel.alertMessage shouldBe "값을 확인 해주세요!"
+            cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
         }
     }
 
@@ -63,6 +58,8 @@ class MainScreenPresenterTest : BaseTest() {
             val state = awaitItem()
             state.eventSink(MainScreen.State.MainScreenEvent.OnClickListButton)
             navigator.awaitNextScreen() shouldBe ListScreen
+
+            cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
         }
     }
 }
