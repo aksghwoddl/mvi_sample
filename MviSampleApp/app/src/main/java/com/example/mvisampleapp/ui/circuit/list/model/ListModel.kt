@@ -7,11 +7,13 @@ import com.example.mvisampleapp.data.model.entity.User
 data class ListModel(
     val userList: List<User>,
     val selectedUser: User?,
+    val alertMessage: String
 ) {
     companion object {
         val placeHolder = ListModel(
             userList = emptyList(),
             selectedUser = null,
+            alertMessage = ""
         )
     }
 }

@@ -13,10 +13,11 @@ object MainScreen : Screen {
         val eventSink: (MainScreenEvent) -> Unit = {},
     ) : CircuitUiState {
         sealed interface MainScreenEvent : CircuitUiEvent {
-            data class SetUserName(val name: String) : MainScreenEvent
-            data class SetUserAge(val age: String) : MainScreenEvent
-            object ClickAddUserButton : MainScreenEvent
-            object ClickListButton : MainScreenEvent
+            data class OnSetUserName(val name: String) : MainScreenEvent
+            data class OnSetUserAge(val age: String) : MainScreenEvent
+            object OnClickAddUserButton : MainScreenEvent
+            object OnClickListButton : MainScreenEvent
+            object OnShowSnackBar : MainScreenEvent
         }
     }
 }

@@ -14,10 +14,11 @@ object ListScreen : Screen {
         val eventSink: (ListScreenEvent) -> Unit = {},
     ) : CircuitUiState {
         sealed interface ListScreenEvent : CircuitUiEvent {
-            object ClickPreviousButton : ListScreenEvent
-            object UpdateUserList : ListScreenEvent
-            data class ClickUserItem(val user: User) : ListScreenEvent
-            data class ClickDeleteButton(val user: User) : ListScreenEvent
+            object OnClickPreviousButton : ListScreenEvent
+            object OnUpdateUserList : ListScreenEvent
+            data class OnClickUserItem(val user: User) : ListScreenEvent
+            data class OnClickDeleteButton(val user: User) : ListScreenEvent
+            object OnShowSnackBar : ListScreenEvent
         }
     }
 }

@@ -1,11 +1,12 @@
 package com.example.mvisampleapp.ui.circuit.list.presenter
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import com.example.mvisampleapp.common.Async
+import com.example.mvisampleapp.common.produceAsync
+import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.ui.circuit.list.model.ListModel
@@ -14,12 +15,10 @@ import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
-import com.slack.circuitx.effects.rememberImpressionNavigator
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 
 private const val TAG = "ListScreenPresenter"
 
@@ -33,45 +32,83 @@ class ListScreenPresenter @AssistedInject constructor(
         var listModel by rememberRetained {
             mutableStateOf(ListModel.placeHolder)
         }
-        val rememberImpressionNavigator = rememberImpressionNavigator(navigator = navigator) {
-            Log.d(TAG, "present: re-enter ListScreen")
+
+        var userListState: Async<List<User>> by rememberRetained {
+            mutableStateOf(Async.None)
         }
 
-        val scope = rememberCoroutineScope()
+        var deleteUserState: Async<Unit> by rememberRetained {
+            mutableStateOf(Async.None)
+        }
+
+        userListState = produceAsync(
+            async = userListState,
+            producer = {
+                getUserListUseCase().first()
+            },
+            onSuccess = { list ->
+                listModel = listModel.copy(
+                    userList = list
+                )
+                Async.Success(data = list)
+            },
+            onFail = { throwable ->
+                listModel = listModel.copy(
+                    userList = emptyList(),
+                    alertMessage = "문제가 발생 했습니다. 로그를 확인하세요."
+                )
+                Async.Fail(throwable = throwable)
+            }
+        )
+
+        deleteUserState = produceAsync(
+            async = deleteUserState,
+            producer = {
+                listModel.selectedUser?.let { user ->
+                    deleteUserUseCase(user = user)
+                }
+            },
+            onSuccess = {
+                listModel = listModel.copy(
+                    selectedUser = null
+                )
+                userListState = Async.Loading
+                Async.Success(Unit)
+            },
+            onFail = { throwable ->
+                listModel = listModel.copy(
+                    alertMessage = "문제가 발생 했습니다. 로그를 확인하세요."
+                )
+                Async.Fail(throwable = throwable)
+            }
+        )
+
         return ListScreen.State(
             listModel = listModel,
         ) { event ->
             when (event) {
-                is ListScreen.State.ListScreenEvent.ClickPreviousButton -> {
-                    rememberImpressionNavigator.goTo(MainScreen)
+                is ListScreen.State.ListScreenEvent.OnClickPreviousButton -> {
+                    navigator.goTo(MainScreen)
                 }
 
-                is ListScreen.State.ListScreenEvent.UpdateUserList -> {
-                    scope.launch {
-                        getUserListUseCase().collect { userList ->
-                            listModel = listModel.copy(
-                                userList = userList,
-                            )
-                        }
-                    }
+                is ListScreen.State.ListScreenEvent.OnUpdateUserList -> {
+                    userListState = Async.Loading
                 }
 
-                is ListScreen.State.ListScreenEvent.ClickUserItem -> {
+                is ListScreen.State.ListScreenEvent.OnClickUserItem -> {
                     listModel = listModel.copy(
                         selectedUser = event.user,
                     )
                 }
 
-                is ListScreen.State.ListScreenEvent.ClickDeleteButton -> {
-                    scope.launch {
-                        deleteUserUseCase(event.user)
-                        getUserListUseCase().collect { userList ->
-                            listModel = listModel.copy(
-                                userList = userList,
-                                selectedUser = null,
-                            )
-                        }
-                    }
+                is ListScreen.State.ListScreenEvent.OnClickDeleteButton -> {
+                    deleteUserState = Async.Loading
+                }
+
+                is ListScreen.State.ListScreenEvent.OnShowSnackBar -> {
+                    listModel = listModel.copy(
+                        alertMessage = ""
+                    )
                 }
             }
         }
