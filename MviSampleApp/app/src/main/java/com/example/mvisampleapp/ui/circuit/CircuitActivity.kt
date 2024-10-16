@@ -2,6 +2,7 @@ package com.example.mvisampleapp.ui.circuit
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import com.example.mvisampleapp.di.CircuitModule
 import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
@@ -41,6 +42,10 @@ class CircuitActivity : ComponentActivity() {
                     navigator = intentAwareNavigator,
                     backstack = backStack,
                 )
+            }
+
+            BackHandler {
+                finish()
             }
         }
     }

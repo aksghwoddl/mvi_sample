@@ -1,5 +1,6 @@
 package com.example.mvisampleapp.ui.circuit.list
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -84,4 +85,8 @@ fun List(
             }
         },
     )
+
+    BackHandler {
+        state.eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
+    }
 }
