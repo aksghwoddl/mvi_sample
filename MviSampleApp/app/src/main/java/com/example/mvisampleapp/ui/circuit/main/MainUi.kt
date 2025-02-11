@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
 import com.example.mvisampleapp.ui.common.components.FunctionButton
 import com.example.mvisampleapp.ui.feature.main.components.UserInputField
+import com.slack.circuitx.effects.LaunchedImpressionEffect
 
 @Composable
 fun Main(
@@ -31,7 +32,7 @@ fun Main(
     val snackBarHostState = remember { SnackbarHostState() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    LaunchedEffect(state.mainModel.alertMessage) {
+    LaunchedImpressionEffect (state.mainModel.alertMessage) {
         if (state.mainModel.alertMessage.isNotEmpty()) {
             snackBarHostState.showSnackbar(message = state.mainModel.alertMessage)
             state.eventSink(MainScreen.State.MainScreenEvent.OnShowSnackBar)

@@ -34,7 +34,7 @@ class ListScreenPresenter @AssistedInject constructor(
         }
 
         var userListState: Async<List<User>> by rememberRetained {
-            mutableStateOf(Async.None)
+            mutableStateOf(Async.Loading)
         }
 
         var deleteUserState: Async<Unit> by rememberRetained {
