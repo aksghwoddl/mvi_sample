@@ -13,7 +13,6 @@ import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuitx.android.rememberAndroidScreenAwareNavigator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.collections.immutable.persistentListOf
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,23 +23,17 @@ class CircuitActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val initialBackStack = persistentListOf(MainScreen)
         setContent {
-            val backStack = rememberSaveableBackStack {
-                initialBackStack.forEach { screen ->
-                    push(screen)
-                }
-            }
-            val navigator = rememberCircuitNavigator(backStack)
-            val intentAwareNavigator = rememberAndroidScreenAwareNavigator(
-                navigator,
+            val backStack = rememberSaveableBackStack(listOf(MainScreen))
+            val mainNavigator = rememberAndroidScreenAwareNavigator(
+                rememberCircuitNavigator(backStack),
                 this@CircuitActivity,
             )
 
             CircuitCompositionLocals(circuit = circuit) {
                 NavigableCircuitContent(
-                    navigator = intentAwareNavigator,
-                    backstack = backStack,
+                    backStack = backStack,
+                    navigator = mainNavigator,
                 )
             }
 
