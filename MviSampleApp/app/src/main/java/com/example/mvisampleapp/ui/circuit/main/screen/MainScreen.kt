@@ -15,9 +15,9 @@ object MainScreen : Screen {
         sealed interface MainScreenEvent : CircuitUiEvent {
             data class OnSetUserName(val name: String) : MainScreenEvent
             data class OnSetUserAge(val age: String) : MainScreenEvent
-            object OnClickAddUserButton : MainScreenEvent
-            object OnClickListButton : MainScreenEvent
-            object OnShowSnackBar : MainScreenEvent
+            data object OnClickAddUserButton : MainScreenEvent
+            data object OnClickListButton : MainScreenEvent
+            data object OnShowSnackBar : MainScreenEvent
         }
     }
 }
