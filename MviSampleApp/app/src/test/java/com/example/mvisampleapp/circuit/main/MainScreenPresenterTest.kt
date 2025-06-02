@@ -19,7 +19,7 @@ class MainScreenPresenterTest : BaseTest() {
     @Test
     fun `OnClickAddUserButton Event 성공 Test`() = runTest {
         MainScreenPresenter(
-            navigator = FakeNavigator(),
+            navigator = FakeNavigator(MainScreen),
             addUserUseCase = addUserUseCase
         ).test {
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserAge(age = "9"))
@@ -38,7 +38,7 @@ class MainScreenPresenterTest : BaseTest() {
     @Test
     fun `OnClickAddUserButton Event 실패 Test`() = runTest {
         MainScreenPresenter(
-            navigator = FakeNavigator(),
+            navigator = FakeNavigator(MainScreen),
             addUserUseCase = addUserUseCase
         ).test {
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserAge(age = "9"))
@@ -50,7 +50,7 @@ class MainScreenPresenterTest : BaseTest() {
 
     @Test
     fun `OnClickListButton Event Test`() = runTest {
-        val navigator = FakeNavigator()
+        val navigator = FakeNavigator(MainScreen)
         MainScreenPresenter(
             navigator = navigator,
             addUserUseCase = addUserUseCase

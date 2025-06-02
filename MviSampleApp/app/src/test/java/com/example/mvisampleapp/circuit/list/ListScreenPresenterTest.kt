@@ -37,7 +37,7 @@ class ListScreenPresenterTest : BaseTest() {
         }
 
         ListScreenPresenter(
-            navigator = FakeNavigator(),
+            navigator = FakeNavigator(ListScreen),
             deleteUserUseCase = deleteUserUseCase,
             getUserListUseCase = getUserListUseCase
         ).test {
@@ -53,14 +53,14 @@ class ListScreenPresenterTest : BaseTest() {
 
     @Test
     fun `OnClickPreviousButton Event Test`() = runTest {
-        val navigator = FakeNavigator()
+        val navigator = FakeNavigator(ListScreen)
         ListScreenPresenter(
             navigator = navigator,
             deleteUserUseCase = deleteUserUseCase,
             getUserListUseCase = getUserListUseCase
         ).test {
+            skipItems(1)
             awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
-
             navigator.awaitNextScreen() shouldBe MainScreen
             cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
         }
