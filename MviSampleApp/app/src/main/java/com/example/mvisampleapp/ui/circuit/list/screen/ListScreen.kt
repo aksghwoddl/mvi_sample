@@ -15,10 +15,8 @@ object ListScreen : Screen {
     ) : CircuitUiState {
         sealed interface ListScreenEvent : CircuitUiEvent {
             object OnClickPreviousButton : ListScreenEvent
-            object OnUpdateUserList : ListScreenEvent
             data class OnClickUserItem(val user: User) : ListScreenEvent
             data class OnClickDeleteButton(val user: User) : ListScreenEvent
-            object OnShowSnackBar : ListScreenEvent
         }
     }
 }

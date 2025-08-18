@@ -11,6 +11,8 @@ import com.example.mvisampleapp.domain.usecase.AddUserUseCase
 import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
 import com.example.mvisampleapp.ui.circuit.main.model.MainModel
 import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
+import com.example.mvisampleapp.ui.common.snackbar.LocalSnackBarEventController
+import com.example.mvisampleapp.ui.common.snackbar.SnackBarEvent
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
@@ -26,9 +28,10 @@ class MainScreenPresenter @AssistedInject constructor(
 ) : Presenter<MainScreen.State> {
     @Composable
     override fun present(): MainScreen.State {
-        var mainModel by rememberRetained {
-            mutableStateOf(MainModel.placeHolder)
-        }
+        val snackBarEventController = LocalSnackBarEventController.current
+
+        var name by rememberRetained { mutableStateOf("") }
+        var age by rememberRetained { mutableStateOf("") }
 
         var addUserState: Async<Unit> by rememberRetained {
             mutableStateOf(Async.None)
@@ -39,55 +42,48 @@ class MainScreenPresenter @AssistedInject constructor(
             producer = {
                 addUserUseCase(
                     user = User(
-                        name = mainModel.name,
-                        age = mainModel.age.toIntOrNull() ?: 0
+                        name = name,
+                        age = age.toIntOrNull() ?: 0
                     )
                 )
             },
             onSuccess = {
-                mainModel = mainModel.copy(
-                    name = "",
-                    age = "",
-                    alertMessage = "정상적으로 값이 저장 되었습니다!"
-                )
+                name = ""
+                age = ""
+                snackBarEventController.sendEvent(SnackBarEvent(message = "값이 정상적으로 저장 되었습니다!"))
                 Async.Success(data = Unit)
             },
             onFail = { throwable ->
-                mainModel = mainModel.copy(
-                    alertMessage = "문제가 발생 했습니다!"
-                )
+                snackBarEventController.sendEvent(SnackBarEvent(message = "문제가 발생 했습니다!"))
                 Async.Fail(throwable = throwable)
             }
         )
 
         return MainScreen.State(
-            mainModel = mainModel,
+            mainModel = MainModel(
+                name = name,
+                age = age
+            ),
         ) { event ->
             when (event) {
                 is MainScreen.State.MainScreenEvent.OnSetUserName -> {
-                    mainModel = mainModel.copy(name = event.name)
+                    name = event.name
                 }
 
                 is MainScreen.State.MainScreenEvent.OnSetUserAge -> {
-                    mainModel = mainModel.copy(age = event.age)
+                    age = event.age
                 }
 
                 is MainScreen.State.MainScreenEvent.OnClickAddUserButton -> {
-                    if (mainModel.name.isNotEmpty() && mainModel.age.isNotEmpty()) { // 값이 비어 있지 않으면
+                    if (name.isNotEmpty() && age.isNotEmpty()) { // 값이 비어 있지 않으면
                         addUserState = Async.Loading
                     } else { // 값이 비어 있을때
-                        mainModel = mainModel.copy(
-                            alertMessage = "값을 확인 해주세요!"
-                        )
+                        snackBarEventController.sendEvent(SnackBarEvent(message = "값을 확인해주세요!"))
                     }
                 }
 
                 is MainScreen.State.MainScreenEvent.OnClickListButton -> {
                     navigator.goTo(ListScreen)
-                }
-
-                is MainScreen.State.MainScreenEvent.OnShowSnackBar -> {
-                    mainModel = mainModel.copy(alertMessage = "")
                 }
             }
         }

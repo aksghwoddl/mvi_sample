@@ -1,23 +1,10 @@
 package com.example.mvisampleapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.mvisampleapp.ui.feature.list.ListRoute
-import com.example.mvisampleapp.ui.feature.main.MainRoute
-import com.example.mvisampleapp.ui.theme.MviSampleAppTheme
+import com.example.mvisampleapp.ui.circuit.CircuitActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 object NavDestination {
     const val MAIN = "main"
@@ -28,15 +15,15 @@ object NavDestination {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /* Intent(this, CircuitActivity::class.java).apply {
-             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-         }.also {
-             startActivity(it)
-         }
+        Intent(this, CircuitActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }.also {
+            startActivity(it)
+        }
 
-         finish()*/
-        setContent {
+        finish()
+        /*setContent {
             val scope = rememberCoroutineScope()
 
             val navController = rememberNavController()
@@ -75,6 +62,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-        }
+        }*/
     }
 }

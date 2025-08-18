@@ -17,7 +17,6 @@ object MainScreen : Screen {
             data class OnSetUserAge(val age: String) : MainScreenEvent
             data object OnClickAddUserButton : MainScreenEvent
             data object OnClickListButton : MainScreenEvent
-            data object OnShowSnackBar : MainScreenEvent
         }
     }
 }

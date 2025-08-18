@@ -8,6 +8,8 @@ import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
 import com.example.mvisampleapp.utils.shouldBe
 import com.slack.circuit.test.FakeNavigator
 import com.slack.circuit.test.test
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -22,14 +24,17 @@ class MainScreenPresenterTest : BaseTest() {
             navigator = FakeNavigator(MainScreen),
             addUserUseCase = addUserUseCase
         ).test {
+            coEvery { addUserUseCase(user = any()) } returns Unit
+
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserAge(age = "9"))
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserName(name = "테스트"))
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnClickAddUserButton)
-            skipItems(2)
-            with(awaitItem()) {
+
+            testScheduler.advanceUntilIdle()
+
+            with(expectMostRecentItem()) {
                 mainModel.name shouldBe ""
                 mainModel.age shouldBe ""
-                mainModel.alertMessage shouldBe "정상적으로 값이 저장 되었습니다!"
             }
             cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
         }
@@ -43,7 +48,11 @@ class MainScreenPresenterTest : BaseTest() {
         ).test {
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserAge(age = "9"))
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnClickAddUserButton)
-            awaitItem().mainModel.alertMessage shouldBe "값을 확인 해주세요!"
+
+            coVerify(exactly = 0) { // 값이 비어있었으면 UseCase는 실행되지 않았어야 한다.
+                addUserUseCase(user = any())
+            }
+
             cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
         }
     }
