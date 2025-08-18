@@ -53,7 +53,6 @@ class MainViewModel @Inject constructor(
                     )
                 } else {
                     val user = User(
-                        index = null,
                         name = state.value.name,
                         age = state.value.age.toInt(),
                     )

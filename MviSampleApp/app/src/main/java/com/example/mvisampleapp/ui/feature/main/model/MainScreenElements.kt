@@ -1,5 +1,6 @@
 package com.example.mvisampleapp.ui.feature.main.model
 
+import androidx.compose.runtime.Immutable
 import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.ui.base.BaseEvent
 import com.example.mvisampleapp.ui.base.BaseState
@@ -18,6 +19,7 @@ class MainScreenElements {
         object OnAddUserSuccess : MainScreenEvent
     }
 
+    @Immutable
     sealed interface MainScreenEffect {
         data class ShowSnackBar(val message: String) : MainScreenEffect
         object MoveListScreen : MainScreenEffect

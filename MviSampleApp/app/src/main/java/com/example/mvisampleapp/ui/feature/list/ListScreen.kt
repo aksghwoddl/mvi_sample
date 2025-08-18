@@ -3,50 +3,49 @@ package com.example.mvisampleapp.ui.feature.list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.ui.common.components.FunctionButton
 import com.example.mvisampleapp.ui.common.dialog.CommonDialog
 import com.example.mvisampleapp.ui.feature.list.components.UserListColumn
 import com.example.mvisampleapp.ui.feature.list.model.ListScreenElements
 import com.example.mvisampleapp.ui.feature.list.viewmodel.ListViewModel
+import com.example.mvisampleapp.ui.theme.MviSampleAppTheme
 import kotlinx.coroutines.flow.collectLatest
 
 private const val TAG = "ListScreen"
 
 @Composable
-fun ListScreen(
+fun ListRoute(
     navController: NavController,
+    onShowSnackBar: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ListViewModel = hiltViewModel(),
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
-    val snackBarHostState = remember {
-        SnackbarHostState()
-    }
-    var showDeleteDialog by remember {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var showDeleteDialog by rememberSaveable {
         mutableStateOf(false)
     }
+
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
                 is ListScreenElements.ListScreenEffect.ShowSnackBar -> {
-                    snackBarHostState.showSnackbar(effect.message)
+                    onShowSnackBar(effect.message)
                 }
 
                 is ListScreenElements.ListScreenEffect.MoveMainScreen -> {
@@ -67,7 +66,7 @@ fun ListScreen(
             dialogTitle = "삭제",
             dialogText = "유저를 삭제 하시겠습니까?",
             onConfirmClick = {
-                state.value.selectedUser?.let { user ->
+                state.selectedUser?.let { user ->
                     viewModel.handleEvent(
                         ListScreenElements.ListScreenEvent.OnClickDeleteButton(user),
                     )
@@ -80,32 +79,64 @@ fun ListScreen(
         )
     }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(snackBarHostState)
+    ListScreen(
+        state = state,
+        onClickUser = { user ->
+            viewModel.handleEvent(ListScreenElements.ListScreenEvent.OnClickUserItem(user))
         },
-        content = { paddingValues ->
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(paddingValues = paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                UserListColumn(
-                    modifier = modifier,
-                    list = state.value.userList,
-                ) { item ->
-                    viewModel.handleEvent(ListScreenElements.ListScreenEvent.OnClickUserItem(item))
-                }
-
-                FunctionButton(
-                    text = "이전화면",
-                    modifier = modifier,
-                ) {
-                    viewModel.handleEvent(ListScreenElements.ListScreenEvent.OnClickPreviousButton)
-                }
-            }
-        },
+        onClickBackButton = {
+            viewModel.handleEvent(ListScreenElements.ListScreenEvent.OnClickPreviousButton)
+        }
     )
+}
+
+@Composable
+internal fun ListScreen(
+    state: ListScreenElements.ListScreenState,
+    onClickUser: (User) -> Unit,
+    onClickBackButton: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        UserListColumn(
+            modifier = modifier,
+            list = state.userList,
+            onClick = onClickUser
+        )
+
+        FunctionButton(
+            text = "이전화면",
+            modifier = modifier,
+            onClick = onClickBackButton
+        )
+    }
+}
+
+
+@Preview
+@Composable
+private fun ListScreenPreview() {
+    MviSampleAppTheme {
+        ListScreen(
+            state = ListScreenElements.ListScreenState(
+                userList = listOf(
+                    User(
+                        name = "테스트1.",
+                        age = 23
+                    ),
+                    User(
+                        name = "테스트2.",
+                        age = 27
+                    )
+                )
+            ),
+            onClickUser = {},
+            onClickBackButton = {},
+        )
+    }
 }

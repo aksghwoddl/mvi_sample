@@ -1,16 +1,23 @@
 package com.example.mvisampleapp.ui
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.mvisampleapp.ui.circuit.CircuitActivity
-import com.example.mvisampleapp.ui.feature.list.ListScreen
-import com.example.mvisampleapp.ui.feature.main.MainScreen
+import com.example.mvisampleapp.ui.feature.list.ListRoute
+import com.example.mvisampleapp.ui.feature.main.MainRoute
+import com.example.mvisampleapp.ui.theme.MviSampleAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 object NavDestination {
     const val MAIN = "main"
@@ -21,28 +28,53 @@ object NavDestination {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Intent(this, CircuitActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        }.also {
-            startActivity(it)
-        }
+        /* Intent(this, CircuitActivity::class.java).apply {
+             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+         }.also {
+             startActivity(it)
+         }
 
-        finish()
-        /*setContent {
+         finish()*/
+        setContent {
+            val scope = rememberCoroutineScope()
+
             val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = NavDestination.MAIN) {
-                composable(NavDestination.MAIN) {
-                    MainScreen(
+
+            val snackBarHostState = remember { SnackbarHostState() }
+
+            MviSampleAppTheme {
+                Scaffold(
+                    snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
+                ) { paddingValues ->
+                    NavHost(
+                        modifier = Modifier.padding(paddingValues),
                         navController = navController,
-                    )
-                }
-                composable(NavDestination.LIST) {
-                    ListScreen(
-                        navController = navController,
-                    )
+                        startDestination = NavDestination.MAIN
+                    ) {
+                        composable(NavDestination.MAIN) {
+                            MainRoute(
+                                navController = navController,
+                                onShowSnackBar = { message ->
+                                    scope.launch {
+                                        snackBarHostState.showSnackbar(message = message)
+                                    }
+                                }
+                            )
+                        }
+                        composable(NavDestination.LIST) {
+                            ListRoute(
+                                navController = navController,
+                                onShowSnackBar = { message ->
+                                    scope.launch {
+                                        snackBarHostState.showSnackbar(message = message)
+                                    }
+                                }
+                            )
+                        }
+                    }
                 }
             }
-        }*/
+        }
     }
 }

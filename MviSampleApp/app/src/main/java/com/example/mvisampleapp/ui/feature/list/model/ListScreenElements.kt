@@ -1,5 +1,6 @@
 package com.example.mvisampleapp.ui.feature.list.model
 
+import androidx.compose.runtime.Immutable
 import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.ui.base.BaseEvent
 import com.example.mvisampleapp.ui.base.BaseState
@@ -17,6 +18,7 @@ class ListScreenElements {
         data class OnClickDeleteButton(val user: User) : ListScreenEvent
     }
 
+    @Immutable
     sealed interface ListScreenEffect {
         data class ShowSnackBar(val message: String) : ListScreenEffect
         object MoveMainScreen : ListScreenEffect
