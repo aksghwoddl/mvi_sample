@@ -3,7 +3,7 @@ package com.example.mvisampleapp.circuit.list
 import com.example.mvisampleapp.base.BaseTest
 import com.example.mvisampleapp.domain.model.UserModel
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
-import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
+import com.example.mvisampleapp.domain.usecase.GetUserListFlowUseCase
 import com.example.mvisampleapp.ui.circuit.list.presenter.ListScreenPresenter
 import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
 import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
@@ -22,7 +22,7 @@ class ListScreenPresenterTest : BaseTest() {
     lateinit var deleteUserUseCase: DeleteUserUseCase
 
     @MockK
-    lateinit var getUserListUseCase: GetUserListUseCase
+    lateinit var getUserListFlowUseCase: GetUserListFlowUseCase
 
     @Test
     fun `OnClickDeleteUserList Event Test`() = runTest {
@@ -32,7 +32,7 @@ class ListScreenPresenterTest : BaseTest() {
         )
 
         coEvery {
-            getUserListUseCase()
+            getUserListFlowUseCase()
         } returns flow {
             emit(
                 listOf(userModel)
@@ -49,7 +49,7 @@ class ListScreenPresenterTest : BaseTest() {
         ListScreenPresenter(
             navigator = FakeNavigator(ListScreen),
             deleteUserUseCase = deleteUserUseCase,
-            getUserListUseCase = getUserListUseCase
+            getUserListFlowUseCase = getUserListFlowUseCase
         ).test {
             awaitItem().eventSink(
                 ListScreen.State.ListScreenEvent.OnClickUserItem(
@@ -79,7 +79,7 @@ class ListScreenPresenterTest : BaseTest() {
         ListScreenPresenter(
             navigator = navigator,
             deleteUserUseCase = deleteUserUseCase,
-            getUserListUseCase = getUserListUseCase
+            getUserListFlowUseCase = getUserListFlowUseCase
         ).test {
             awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
             navigator.awaitNextScreen() shouldBe MainScreen

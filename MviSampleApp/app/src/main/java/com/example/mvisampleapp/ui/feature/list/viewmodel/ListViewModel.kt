@@ -92,15 +92,17 @@ class ListViewModel @Inject constructor(
         viewModelScope.launch {
             runSuspendCatching {
                 getUserListUseCase()
-            }.onSuccess { flow ->
-                flow.collect { result ->
-                    val userList = withContext(Dispatchers.Default) {
-                        result.map {
-                            it.toUser()
-                        }
-                    }
-                    handleEvent(ListScreenElements.ListScreenEvent.OnUpdateUserList(userList))
-                }
+            }.onSuccess {
+                handleEvent(
+                    ListScreenElements.ListScreenEvent.OnUpdateUserList(
+                        userList = withContext(
+                            Dispatchers.Default
+                        ) {
+                            it.map { userModel ->
+                                userModel.toUser()
+                            }
+                        })
+                )
             }.onFailure { throwable ->
                 Log.d(TAG, "getUserList : fail => ${throwable.message}")
             }

@@ -6,43 +6,33 @@ import com.example.mvisampleapp.domain.usecase.AddUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.repository.FakeUserRepository
 import com.example.mvisampleapp.utils.shouldBe
-import io.mockk.coEvery
-import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class AddUserUseCaseTest : BaseTest() {
-
-    @MockK
     private lateinit var userRepository: FakeUserRepository
     private lateinit var addUserUseCase: AddUserUseCase
     private lateinit var getUserListUseCase: GetUserListUseCase
 
     override fun setup() {
         super.setup()
+        userRepository = FakeUserRepository()
         addUserUseCase = AddUserUseCase(userRepository)
         getUserListUseCase = GetUserListUseCase(userRepository)
     }
 
     @Test
     fun `user 저장 후 정상적으로 값이 저장 되었는지 테스트`() = runTest {
-        val userEntity = UserEntity(null, "test1", 77)
-
-        coEvery {
-            userRepository.getAllUser()
-        } returns flow {
-            emit(listOf(userEntity))
-        }
-
         addUserUseCase(
-            name = userEntity.name,
-            age = userEntity.age
+            name = "test1",
+            age = 77
         )
-        getUserListUseCase().collect {
-            it.size shouldBe 1
-            it.first().name shouldBe "test1"
-            it.first().age shouldBe 77
+
+        with(getUserListUseCase()) {
+            size shouldBe 1
+            first().name shouldBe "test1"
+            first().age shouldBe 77
         }
     }
 

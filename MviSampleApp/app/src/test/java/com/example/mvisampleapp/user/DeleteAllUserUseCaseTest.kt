@@ -1,19 +1,16 @@
 package com.example.mvisampleapp.user
 
 import com.example.mvisampleapp.base.BaseTest
-import com.example.mvisampleapp.data.repository.UserRepository
 import com.example.mvisampleapp.domain.usecase.AddUserUseCase
 import com.example.mvisampleapp.domain.usecase.DeleteAllUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
+import com.example.mvisampleapp.repository.FakeUserRepository
 import com.example.mvisampleapp.utils.shouldBe
-import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class DeleteAllUserUseCaseTest : BaseTest() {
-    @MockK
-    lateinit var userRepository: UserRepository
-
+    private lateinit var userRepository: FakeUserRepository
     private lateinit var addUserUseCase: AddUserUseCase
     private lateinit var deleteAllUserUseCase: DeleteAllUserUseCase
 
@@ -21,6 +18,7 @@ class DeleteAllUserUseCaseTest : BaseTest() {
 
     override fun setup() {
         super.setup()
+        userRepository = FakeUserRepository()
         addUserUseCase = AddUserUseCase(userRepository = userRepository)
         deleteAllUserUseCase = DeleteAllUserUseCase(userRepository = userRepository)
         getUserListUseCase = GetUserListUseCase(userRepository = userRepository)
@@ -38,10 +36,13 @@ class DeleteAllUserUseCaseTest : BaseTest() {
             age = 2
         )
 
+        getUserListUseCase().size shouldBe 2
         deleteAllUserUseCase()
+        getUserListUseCase().size shouldBe 0
+    }
 
-        getUserListUseCase().collect {
-            it.size shouldBe 0
-        }
+    override fun tearDown() {
+        super.tearDown()
+        userRepository.closeDatabase()
     }
 }

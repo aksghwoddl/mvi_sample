@@ -9,7 +9,7 @@ import com.example.mvisampleapp.common.Async
 import com.example.mvisampleapp.common.produceAsync
 import com.example.mvisampleapp.domain.model.UserModel
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
-import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
+import com.example.mvisampleapp.domain.usecase.GetUserListFlowUseCase
 import com.example.mvisampleapp.ui.circuit.list.model.ListModel
 import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
 import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
@@ -27,7 +27,7 @@ private const val TAG = "ListScreenPresenter"
 
 class ListScreenPresenter @AssistedInject constructor(
     @Assisted val navigator: Navigator,
-    private val getUserListUseCase: GetUserListUseCase,
+    private val getUserListFlowUseCase: GetUserListFlowUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
 ) : Presenter<ListScreen.State> {
     @Composable
@@ -39,7 +39,7 @@ class ListScreenPresenter @AssistedInject constructor(
         var selectedUser by rememberRetained { mutableStateOf<User?>(null) }
 
         val userList by produceState(initialValue = emptyList()) {
-            getUserListUseCase().collect {
+            getUserListFlowUseCase().collect {
                 value = withContext(Dispatchers.Default) {
                     it.map { userModel ->
                         userModel.toUser()
