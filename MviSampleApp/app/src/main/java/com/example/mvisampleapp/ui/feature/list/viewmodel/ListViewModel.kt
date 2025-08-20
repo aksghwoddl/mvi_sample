@@ -3,16 +3,19 @@ package com.example.mvisampleapp.ui.feature.list.viewmodel
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.mvisampleapp.common.runSuspendCatching
-import com.example.mvisampleapp.data.model.entity.User
+import com.example.mvisampleapp.domain.model.UserModel
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.ui.base.BaseViewModel
 import com.example.mvisampleapp.ui.feature.list.model.ListScreenElements
+import com.example.mvisampleapp.ui.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 private const val TAG = "ListViewModel"
@@ -89,10 +92,17 @@ class ListViewModel @Inject constructor(
         viewModelScope.launch {
             runSuspendCatching {
                 getUserListUseCase()
-            }.onSuccess { flow ->
-                flow.collect { result ->
-                    handleEvent(ListScreenElements.ListScreenEvent.OnUpdateUserList(result))
-                }
+            }.onSuccess {
+                handleEvent(
+                    ListScreenElements.ListScreenEvent.OnUpdateUserList(
+                        userList = withContext(
+                            Dispatchers.Default
+                        ) {
+                            it.map { userModel ->
+                                userModel.toUser()
+                            }
+                        })
+                )
             }.onFailure { throwable ->
                 Log.d(TAG, "getUserList : fail => ${throwable.message}")
             }
@@ -102,7 +112,10 @@ class ListViewModel @Inject constructor(
     private fun deleteUser(user: User) {
         viewModelScope.launch {
             runSuspendCatching {
-                deleteUserUseCase(user = user)
+                deleteUserUseCase(
+                    name = user.name,
+                    age = user.age,
+                )
             }.onSuccess {
                 handleSideEffect(ListScreenElements.ListScreenSideEffect.GetUserList)
             }.onFailure { throwable ->
@@ -110,4 +123,9 @@ class ListViewModel @Inject constructor(
             }
         }
     }
+
+    private fun UserModel.toUser() = User(
+        name = name,
+        age = age,
+    )
 }

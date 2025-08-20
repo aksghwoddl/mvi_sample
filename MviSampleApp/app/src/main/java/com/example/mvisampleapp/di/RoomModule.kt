@@ -3,8 +3,8 @@ package com.example.mvisampleapp.di
 import android.content.Context
 import androidx.room.Room
 import com.example.mvisampleapp.common.MviApplication
-import com.example.mvisampleapp.data.database.UserDatabase
-import com.example.mvisampleapp.data.model.dao.UserDao
+import com.example.mvisampleapp.data.db.UserDatabase
+import com.example.mvisampleapp.data.db.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

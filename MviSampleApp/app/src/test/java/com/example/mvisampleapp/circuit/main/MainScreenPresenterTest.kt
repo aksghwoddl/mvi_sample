@@ -24,7 +24,12 @@ class MainScreenPresenterTest : BaseTest() {
             navigator = FakeNavigator(MainScreen),
             addUserUseCase = addUserUseCase
         ).test {
-            coEvery { addUserUseCase(user = any()) } returns Unit
+            coEvery {
+                addUserUseCase(
+                    name = any(),
+                    age = any(),
+                )
+            } returns Unit
 
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserAge(age = "9"))
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserName(name = "테스트"))
@@ -50,7 +55,7 @@ class MainScreenPresenterTest : BaseTest() {
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnClickAddUserButton)
 
             coVerify(exactly = 0) { // 값이 비어있었으면 UseCase는 실행되지 않았어야 한다.
-                addUserUseCase(user = any())
+                addUserUseCase(name = any(), age = any())
             }
 
             cancelAndConsumeRemainingEvents().isEmpty() shouldBe true

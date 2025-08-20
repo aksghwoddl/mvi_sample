@@ -1,7 +1,7 @@
 package com.example.mvisampleapp.ui.circuit.list.screen
 
-import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.ui.circuit.list.model.ListModel
+import com.example.mvisampleapp.ui.model.User
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
@@ -16,7 +16,7 @@ object ListScreen : Screen {
         sealed interface ListScreenEvent : CircuitUiEvent {
             object OnClickPreviousButton : ListScreenEvent
             data class OnClickUserItem(val user: User) : ListScreenEvent
-            data class OnClickDeleteButton(val user: User) : ListScreenEvent
+            data class OnClickDeleteButton(val name: String, val age: Int) : ListScreenEvent
         }
     }
 }

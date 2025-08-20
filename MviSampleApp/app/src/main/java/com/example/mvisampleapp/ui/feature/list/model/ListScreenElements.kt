@@ -1,9 +1,9 @@
 package com.example.mvisampleapp.ui.feature.list.model
 
 import androidx.compose.runtime.Immutable
-import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.ui.base.BaseEvent
 import com.example.mvisampleapp.ui.base.BaseState
+import com.example.mvisampleapp.ui.model.User
 
 class ListScreenElements {
     data class ListScreenState(

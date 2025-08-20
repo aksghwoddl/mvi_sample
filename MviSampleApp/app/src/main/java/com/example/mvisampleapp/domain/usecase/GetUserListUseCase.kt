@@ -1,14 +1,20 @@
 package com.example.mvisampleapp.domain.usecase
 
-import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.data.repository.UserRepository
-import kotlinx.coroutines.flow.Flow
+import com.example.mvisampleapp.domain.mapper.toUserModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GetUserListUseCase @Inject constructor(
     private val userRepository: UserRepository,
 ) {
-    operator fun invoke(): Flow<List<User>> {
-        return userRepository.getAllUser()
+    suspend operator fun invoke() = withContext(Dispatchers.Default) {
+        userRepository.getAllUser().firstOrNull()?.let {
+            it.map { userEntity ->
+                userEntity.toUserModel()
+            }
+        } ?: emptyList()
     }
 }

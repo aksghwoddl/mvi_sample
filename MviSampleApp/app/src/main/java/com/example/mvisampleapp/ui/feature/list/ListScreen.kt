@@ -17,12 +17,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.ui.common.components.FunctionButton
 import com.example.mvisampleapp.ui.common.dialog.CommonDialog
 import com.example.mvisampleapp.ui.feature.list.components.UserListColumn
 import com.example.mvisampleapp.ui.feature.list.model.ListScreenElements
 import com.example.mvisampleapp.ui.feature.list.viewmodel.ListViewModel
+import com.example.mvisampleapp.ui.model.User
 import com.example.mvisampleapp.ui.theme.MviSampleAppTheme
 import kotlinx.coroutines.flow.collectLatest
 
@@ -37,9 +37,7 @@ fun ListRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var showDeleteDialog by rememberSaveable {
-        mutableStateOf(false)
-    }
+    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { effect ->

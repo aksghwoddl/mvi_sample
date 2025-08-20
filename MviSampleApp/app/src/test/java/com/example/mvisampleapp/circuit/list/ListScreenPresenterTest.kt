@@ -1,12 +1,13 @@
 package com.example.mvisampleapp.circuit.list
 
 import com.example.mvisampleapp.base.BaseTest
-import com.example.mvisampleapp.data.model.entity.User
+import com.example.mvisampleapp.domain.model.UserModel
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
-import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
+import com.example.mvisampleapp.domain.usecase.GetUserListFlowUseCase
 import com.example.mvisampleapp.ui.circuit.list.presenter.ListScreenPresenter
 import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
 import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
+import com.example.mvisampleapp.ui.model.User
 import com.example.mvisampleapp.utils.shouldBe
 import com.slack.circuit.test.FakeNavigator
 import com.slack.circuit.test.test
@@ -21,30 +22,49 @@ class ListScreenPresenterTest : BaseTest() {
     lateinit var deleteUserUseCase: DeleteUserUseCase
 
     @MockK
-    lateinit var getUserListUseCase: GetUserListUseCase
+    lateinit var getUserListFlowUseCase: GetUserListFlowUseCase
 
     @Test
     fun `OnClickDeleteUserList Event Test`() = runTest {
-        val user = User(
+        val userModel = UserModel(
             age = 7,
             name = "테스트"
         )
 
         coEvery {
-            getUserListUseCase()
+            getUserListFlowUseCase()
         } returns flow {
-            emit(listOf(user))
+            emit(
+                listOf(userModel)
+            )
         }
 
-        coEvery { deleteUserUseCase(user = any()) } returns Unit
+        coEvery {
+            deleteUserUseCase(
+                name = any(),
+                age = any(),
+            )
+        } returns Unit
 
         ListScreenPresenter(
             navigator = FakeNavigator(ListScreen),
             deleteUserUseCase = deleteUserUseCase,
-            getUserListUseCase = getUserListUseCase
+            getUserListFlowUseCase = getUserListFlowUseCase
         ).test {
-            awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(user = user))
-            awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteButton(user = user))
+            awaitItem().eventSink(
+                ListScreen.State.ListScreenEvent.OnClickUserItem(
+                    user = User(
+                        age = 7,
+                        name = "테스트"
+                    )
+                )
+            )
+            awaitItem().eventSink(
+                ListScreen.State.ListScreenEvent.OnClickDeleteButton(
+                    age = 7,
+                    name = "테스트"
+                )
+            )
 
             testScheduler.advanceUntilIdle()
 
@@ -59,7 +79,7 @@ class ListScreenPresenterTest : BaseTest() {
         ListScreenPresenter(
             navigator = navigator,
             deleteUserUseCase = deleteUserUseCase,
-            getUserListUseCase = getUserListUseCase
+            getUserListFlowUseCase = getUserListFlowUseCase
         ).test {
             awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
             navigator.awaitNextScreen() shouldBe MainScreen

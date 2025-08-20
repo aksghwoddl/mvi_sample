@@ -1,7 +1,7 @@
 package com.example.mvisampleapp.ui.feature.main.model
 
 import androidx.compose.runtime.Immutable
-import com.example.mvisampleapp.data.model.entity.User
+import com.example.mvisampleapp.data.db.entity.UserEntity
 import com.example.mvisampleapp.ui.base.BaseEvent
 import com.example.mvisampleapp.ui.base.BaseState
 
@@ -26,6 +26,9 @@ class MainScreenElements {
     }
 
     sealed interface MainScreenSideEffect {
-        data class AddUser(val user: User) : MainScreenSideEffect
+        data class AddUser(
+            val name: String,
+            val age: Int,
+        ) : MainScreenSideEffect
     }
 }
