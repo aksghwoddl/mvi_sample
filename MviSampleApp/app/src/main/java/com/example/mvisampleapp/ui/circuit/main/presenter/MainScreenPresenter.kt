@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.mvisampleapp.common.Async
 import com.example.mvisampleapp.common.produceAsync
-import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.domain.usecase.AddUserUseCase
 import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
 import com.example.mvisampleapp.ui.circuit.main.model.MainModel
@@ -41,10 +40,8 @@ class MainScreenPresenter @AssistedInject constructor(
             async = addUserState,
             producer = {
                 addUserUseCase(
-                    user = User(
-                        name = name,
-                        age = age.toIntOrNull() ?: 0
-                    )
+                    name = name,
+                    age = age.toIntOrNull() ?: 0
                 )
             },
             onSuccess = {

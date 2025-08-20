@@ -3,7 +3,6 @@ package com.example.mvisampleapp.ui.feature.main.viewmodel
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.mvisampleapp.common.runSuspendCatching
-import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.domain.usecase.AddUserUseCase
 import com.example.mvisampleapp.ui.base.BaseViewModel
 import com.example.mvisampleapp.ui.feature.main.model.MainScreenElements
@@ -52,11 +51,12 @@ class MainViewModel @Inject constructor(
                         )
                     )
                 } else {
-                    val user = User(
-                        name = state.value.name,
-                        age = state.value.age.toInt(),
+                    handleSideEffect(
+                        MainScreenElements.MainScreenSideEffect.AddUser(
+                            name = state.value.name,
+                            age = state.value.age.toInt(),
+                        )
                     )
-                    handleSideEffect(MainScreenElements.MainScreenSideEffect.AddUser(user))
                 }
             }
 
@@ -80,10 +80,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun handleSideEffect(effect: MainScreenElements.MainScreenSideEffect) {
-        when (effect) {
+    private fun handleSideEffect(sideEffect: MainScreenElements.MainScreenSideEffect) {
+        when (sideEffect) {
             is MainScreenElements.MainScreenSideEffect.AddUser -> {
-                addUser(user = effect.user)
+                addUser(
+                    name = sideEffect.name,
+                    age = sideEffect.age,
+                )
             }
         }
     }
@@ -94,10 +97,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun addUser(user: User) {
+    private fun addUser(
+        name: String,
+        age: Int,
+    ) {
         viewModelScope.launch {
             runSuspendCatching {
-                addUserUseCase(user)
+                addUserUseCase(name = name, age = age)
             }.onSuccess {
                 handleEvent(MainScreenElements.MainScreenEvent.OnAddUserSuccess)
             }.onFailure { throwable ->

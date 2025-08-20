@@ -14,12 +14,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.mvisampleapp.data.model.entity.User
 import com.example.mvisampleapp.ui.circuit.list.model.ListModel
 import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
 import com.example.mvisampleapp.ui.common.components.FunctionButton
 import com.example.mvisampleapp.ui.common.dialog.CommonDialog
 import com.example.mvisampleapp.ui.feature.list.components.UserListColumn
+import com.example.mvisampleapp.ui.model.User
 import com.example.mvisampleapp.ui.theme.MviSampleAppTheme
 
 @Composable
@@ -39,7 +39,12 @@ fun List(
             dialogText = "유저를 삭제 하시겠습니까?",
             onConfirmClick = {
                 state.listModel.selectedUser?.let { user ->
-                    state.eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteButton(user))
+                    state.eventSink(
+                        ListScreen.State.ListScreenEvent.OnClickDeleteButton(
+                            name = user.name,
+                            age = user.age
+                        )
+                    )
                     showDeleteDialog = false
                 }
             },

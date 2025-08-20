@@ -1,7 +1,7 @@
 package com.example.mvisampleapp.ui.circuit.list.model
 
 import androidx.compose.runtime.Stable
-import com.example.mvisampleapp.data.model.entity.User
+import com.example.mvisampleapp.ui.model.User
 
 @Stable
 data class ListModel(
