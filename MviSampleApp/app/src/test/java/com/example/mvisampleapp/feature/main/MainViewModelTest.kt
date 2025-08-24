@@ -3,8 +3,8 @@ package com.example.mvisampleapp.feature.main
 import app.cash.turbine.testIn
 import com.example.mvisampleapp.base.BaseTest
 import com.example.mvisampleapp.domain.usecase.AddUserUseCase
-import com.example.mvisampleapp.ui.feature.main.model.MainScreenElements
-import com.example.mvisampleapp.ui.feature.main.viewmodel.MainViewModel
+import com.example.mvisampleapp.feature.main.model.MainScreenElements
+import com.example.mvisampleapp.feature.main.viewmodel.MainViewModel
 import com.example.mvisampleapp.utils.shouldBe
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest

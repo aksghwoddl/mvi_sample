@@ -19,4 +19,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "MviSampleApp"
 include(":app")
- 
+include(":circuitapp")
+include(":core")
+include(":core:data")
+include(":core:data-impl")
+include(":core:domain")
+include(":library")
+include(":library:test")
+include(":core:presenter")

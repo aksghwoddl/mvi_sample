@@ -7,7 +7,7 @@ import com.example.mvisampleapp.domain.usecase.GetUserListFlowUseCase
 import com.example.mvisampleapp.ui.circuit.list.presenter.ListScreenPresenter
 import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
 import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
-import com.example.mvisampleapp.ui.model.User
+import com.example.mvisampleapp.model.User
 import com.example.mvisampleapp.utils.shouldBe
 import com.slack.circuit.test.FakeNavigator
 import com.slack.circuit.test.test

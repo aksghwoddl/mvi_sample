@@ -1,11 +1,11 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
-    id("kotlin-parcelize")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose.plugin)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -43,9 +43,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -54,7 +51,10 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":core:data"))
+    implementation(project(":core:data-impl"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:presenter"))
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
@@ -98,10 +98,4 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
-
-    // Circuit
-    implementation(libs.circuit.foundation)
-    implementation(libs.circuitx.android)
-    implementation(libs.circuitx.effects)
-    testImplementation(libs.circuit.test)
 }

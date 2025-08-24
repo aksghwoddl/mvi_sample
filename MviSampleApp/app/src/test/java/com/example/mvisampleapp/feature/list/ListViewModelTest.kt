@@ -4,9 +4,9 @@ import app.cash.turbine.testIn
 import com.example.mvisampleapp.base.BaseTest
 import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
 import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
-import com.example.mvisampleapp.ui.feature.list.model.ListScreenElements
-import com.example.mvisampleapp.ui.feature.list.viewmodel.ListViewModel
-import com.example.mvisampleapp.ui.model.User
+import com.example.mvisampleapp.feature.list.model.ListScreenElements
+import com.example.mvisampleapp.feature.list.viewmodel.ListViewModel
+import com.example.mvisampleapp.model.User
 import com.example.mvisampleapp.utils.shouldBe
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest

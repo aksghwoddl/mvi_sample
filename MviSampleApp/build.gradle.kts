@@ -1,8 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id("com.android.application") version "8.9.3" apply false
-    id("org.jetbrains.kotlin.android") version "2.1.10" apply false
-    id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
-    id("com.google.devtools.ksp") version "2.1.10-1.0.30" apply false
-    id("com.google.dagger.hilt.android") version "2.57" apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose.plugin) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.android.library) apply false
+    // kapt/parcelize는 모듈 쪽에서 alias로 추가 (버전 없음)
 }
