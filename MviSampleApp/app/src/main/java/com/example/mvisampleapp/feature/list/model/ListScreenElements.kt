@@ -18,9 +18,10 @@ class ListScreenElements {
         data object OnClickPreviousButton : ListScreenEvent
         data class OnUpdateUserList(val userList: List<User>) : ListScreenEvent
         data class OnClickUserItem(val user: User) : ListScreenEvent
-        data class OnClickDeleteButton(val user: User) : ListScreenEvent
+        data class OnClickDeleteButton(val user: User) : ListScreenEventdata object ShowUserDeleteDialog : ListScreenEvent
         data object ShowUserDeleteDialog : ListScreenEvent
         data object DismissUserDeleteDialog : ListScreenEvent
+        data object OnClickDeleteAllButton : ListScreenEvent
     }
 
     @Immutable
@@ -32,5 +33,6 @@ class ListScreenElements {
     sealed interface ListScreenSideEffect {
         data object GetUserList : ListScreenSideEffect
         data class DeleteUser(val user: User) : ListScreenSideEffect
+        data object DeleteAll : ListScreenSideEffect
     }
 }

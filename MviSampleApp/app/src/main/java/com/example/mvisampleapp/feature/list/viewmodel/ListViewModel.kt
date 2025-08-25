@@ -3,6 +3,7 @@ package com.example.mvisampleapp.feature.list.viewmodel
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.UserModel
+import com.example.domain.usecase.DeleteAllUserUseCase
 import com.example.domain.usecase.DeleteUserUseCase
 import com.example.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.base.BaseViewModel
@@ -25,6 +26,7 @@ private const val TAG = "ListViewModel"
 class ListViewModel @Inject constructor(
     private val getUserListUseCase: GetUserListUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
+    private val deleteAllUserUseCase: DeleteAllUserUseCase
 ) :
     BaseViewModel<ListScreenElements.ListScreenState, ListScreenElements.ListScreenEvent>(
         ListScreenElements.ListScreenState(),
@@ -84,6 +86,10 @@ class ListViewModel @Inject constructor(
                     )
                 }
             }
+
+            is ListScreenElements.ListScreenEvent.OnClickDeleteAllButton -> {
+                handleSideEffect(ListScreenElements.ListScreenSideEffect.DeleteAll)
+            }
         }
     }
 
@@ -95,6 +101,10 @@ class ListViewModel @Inject constructor(
 
             is ListScreenElements.ListScreenSideEffect.DeleteUser -> {
                 deleteUser(user = sideEffect.user)
+            }
+
+            is ListScreenElements.ListScreenSideEffect.DeleteAll -> {
+                deleteAllUser()
             }
         }
     }
@@ -133,6 +143,18 @@ class ListViewModel @Inject constructor(
                     name = user.name,
                     age = user.age,
                 )
+            }.onSuccess {
+                handleSideEffect(ListScreenElements.ListScreenSideEffect.GetUserList)
+            }.onFailure { throwable ->
+                Log.d(TAG, "deleteUser: fail => ${throwable.message}")
+            }
+        }
+    }
+
+    private fun deleteAllUser() {
+        viewModelScope.launch {
+            runSuspendCatching {
+                deleteAllUserUseCase()
             }.onSuccess {
                 handleSideEffect(ListScreenElements.ListScreenSideEffect.GetUserList)
             }.onFailure { throwable ->
