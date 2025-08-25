@@ -15,11 +15,11 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.mvisampleapp.ui.circuit.main.model.MainModel
-import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
-import com.example.mvisampleapp.ui.common.components.FunctionButton
-import com.example.mvisampleapp.ui.feature.main.components.UserInputField
-import com.example.mvisampleapp.ui.theme.MviSampleAppTheme
+import com.example.circuitapp.main.model.MainModel
+import com.example.circuitapp.main.screen.MainScreen
+import com.example.design_system.theme.MviSampleAppTheme
+import com.example.design_system.components.FunctionButton
+import com.example.presenter.feature.main.UserInputField
 
 @Composable
 fun Main(

@@ -1,6 +1,6 @@
 package com.example.circuitapp.main.screen
 
-import com.example.mvisampleapp.ui.circuit.main.model.MainModel
+import com.example.circuitapp.main.model.MainModel
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen

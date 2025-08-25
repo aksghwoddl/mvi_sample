@@ -8,8 +8,9 @@ import com.example.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.base.BaseViewModel
 import com.example.mvisampleapp.common.runSuspendCatching
 import com.example.mvisampleapp.feature.list.model.ListScreenElements
-import com.example.mvisampleapp.model.User
+import com.example.presenter.feature.list.model.User
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -45,7 +46,7 @@ class ListViewModel @Inject constructor(
             is ListScreenElements.ListScreenEvent.OnUpdateUserList -> {
                 updateState {
                     it.copy(
-                        userList = event.userList,
+                        userList = event.userList.toPersistentList(),
                     )
                 }
             }

@@ -1,10 +1,10 @@
 package com.example.circuitapp.di
 
-import com.example.mvisampleapp.ui.circuit.createCircuitScreenPresenterFactory
-import com.example.mvisampleapp.ui.circuit.createCircuitScreenUiFactory
-import com.example.mvisampleapp.ui.circuit.list.List
-import com.example.mvisampleapp.ui.circuit.list.presenter.ListScreenPresenter
-import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
+import com.example.circuitapp.createCircuitScreenPresenterFactory
+import com.example.circuitapp.createCircuitScreenUiFactory
+import com.example.circuitapp.list.List
+import com.example.circuitapp.list.presenter.ListScreenPresenter
+import com.example.circuitapp.list.screen.ListScreen
 import com.slack.circuit.runtime.presenter.Presenter
 import com.slack.circuit.runtime.ui.Ui
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.example.mvisampleapp.theme
+package com.example.design_system.theme
 
 import android.app.Activity
 import android.os.Build

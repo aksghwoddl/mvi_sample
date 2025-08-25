@@ -1,4 +1,4 @@
-package com.example.mvisampleapp.model
+package com.example.presenter.feature.list.model
 
 import androidx.compose.runtime.Stable
 

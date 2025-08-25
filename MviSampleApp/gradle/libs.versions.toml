@@ -24,6 +24,7 @@ circuit = "0.30.0"
 mockk = "1.14.5"
 appcompat = "1.7.1"
 material = "1.12.0"
+kotlin-immutable = "0.4.0"
 
 [libraries]
 # AndroidX / Compose
@@ -36,6 +37,7 @@ androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 
@@ -48,6 +50,8 @@ compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+kotlin-immutable = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-collections-immutable', version.ref = "kotlin-immutable" }
 
 # Test
 junit4 = { module = "junit:junit", version.ref = "junit4" }

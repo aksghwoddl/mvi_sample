@@ -1,16 +1,18 @@
 package com.example.circuitapp.list.model
 
 import androidx.compose.runtime.Stable
-import com.example.mvisampleapp.ui.model.User
+import com.example.presenter.feature.list.model.User
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 @Stable
 data class ListModel(
-    val userList: List<User>,
+    val userList: PersistentList<User>,
     val selectedUser: User?,
 ) {
     companion object {
         val placeHolder = ListModel(
-            userList = emptyList(),
+            userList = persistentListOf(),
             selectedUser = null,
         )
     }

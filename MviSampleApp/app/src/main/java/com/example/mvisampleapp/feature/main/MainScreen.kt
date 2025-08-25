@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.design_system.components.FunctionButton
+import com.example.design_system.theme.MviSampleAppTheme
 import com.example.mvisampleapp.NavDestination
-import com.example.mvisampleapp.feature.main.components.UserInputField
 import com.example.mvisampleapp.feature.main.model.MainScreenElements
 import com.example.mvisampleapp.feature.main.viewmodel.MainViewModel
-import com.example.mvisampleapp.theme.MviSampleAppTheme
-import com.example.presenter.components.FunctionButton
+import com.example.presenter.feature.main.UserInputField
 import kotlinx.coroutines.flow.collectLatest
 
 private const val TAG = "MainScreen"

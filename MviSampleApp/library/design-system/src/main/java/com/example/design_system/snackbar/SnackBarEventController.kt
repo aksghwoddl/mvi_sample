@@ -1,4 +1,4 @@
-package com.example.presenter.snackbar
+package com.example.design_system.snackbar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable

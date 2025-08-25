@@ -17,13 +17,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.mvisampleapp.feature.list.components.UserListColumn
+import com.example.design_system.components.FunctionButton
+import com.example.design_system.dialog.CommonDialog
+import com.example.design_system.theme.MviSampleAppTheme
 import com.example.mvisampleapp.feature.list.model.ListScreenElements
 import com.example.mvisampleapp.feature.list.viewmodel.ListViewModel
-import com.example.mvisampleapp.model.User
-import com.example.mvisampleapp.theme.MviSampleAppTheme
-import com.example.presenter.components.FunctionButton
-import com.example.presenter.dialog.CommonDialog
+import com.example.presenter.feature.list.UserListColumn
+import com.example.presenter.feature.list.model.User
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.collectLatest
 
 private const val TAG = "ListScreen"
@@ -122,7 +123,7 @@ private fun ListScreenPreview() {
     MviSampleAppTheme {
         ListScreen(
             state = ListScreenElements.ListScreenState(
-                userList = listOf(
+                userList = persistentListOf(
                     User(
                         name = "테스트1.",
                         age = 23

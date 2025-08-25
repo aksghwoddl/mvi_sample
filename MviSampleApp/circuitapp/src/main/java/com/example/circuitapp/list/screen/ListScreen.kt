@@ -1,7 +1,7 @@
 package com.example.circuitapp.list.screen
 
-import com.example.mvisampleapp.ui.circuit.list.model.ListModel
-import com.example.mvisampleapp.ui.model.User
+import com.example.circuitapp.list.model.ListModel
+import com.example.presenter.feature.list.model.User
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen

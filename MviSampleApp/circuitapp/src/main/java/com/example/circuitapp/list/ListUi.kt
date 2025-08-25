@@ -14,13 +14,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.mvisampleapp.ui.circuit.list.model.ListModel
-import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
-import com.example.mvisampleapp.ui.common.components.FunctionButton
-import com.example.mvisampleapp.ui.common.dialog.CommonDialog
-import com.example.mvisampleapp.ui.feature.list.components.UserListColumn
-import com.example.mvisampleapp.ui.model.User
-import com.example.mvisampleapp.ui.theme.MviSampleAppTheme
+import com.example.circuitapp.list.model.ListModel
+import com.example.circuitapp.list.screen.ListScreen
+import com.example.design_system.components.FunctionButton
+import com.example.design_system.dialog.CommonDialog
+import com.example.design_system.theme.MviSampleAppTheme
+import com.example.presenter.feature.list.UserListColumn
+import com.example.presenter.feature.list.model.User
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun List(
@@ -87,7 +88,7 @@ private fun ListUiPreview() {
         List(
             state = ListScreen.State(
                 listModel = ListModel(
-                    userList = listOf(
+                    userList = persistentListOf(
                         User(
                             name = "테스트1",
                             age = 23,

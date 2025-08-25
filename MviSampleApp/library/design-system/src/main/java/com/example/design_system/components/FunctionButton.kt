@@ -1,4 +1,4 @@
-package com.example.presenter.components
+package com.example.design_system.components
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

@@ -55,6 +55,8 @@ dependencies {
     implementation(project(":core:data-impl"))
     implementation(project(":core:domain"))
     implementation(project(":core:presenter"))
+    implementation(project(":library:design-system"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
@@ -63,27 +65,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
-    testImplementation(libs.junit4)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.hilt.android.testing)
-    testImplementation(libs.coroutines.test)
-    testImplementation(libs.turbine)
-
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-
-    testImplementation(libs.mockk)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    implementation(libs.kotlin.immutable)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    // Room
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
 
     // ViewModel
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -98,4 +83,6 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+
+    testImplementation(project(":library:test"))
 }

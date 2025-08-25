@@ -5,21 +5,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.setValue
-import com.example.mvisampleapp.common.Async
-import com.example.mvisampleapp.common.produceAsync
-import com.example.mvisampleapp.domain.model.UserModel
-import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
-import com.example.mvisampleapp.domain.usecase.GetUserListFlowUseCase
-import com.example.mvisampleapp.ui.circuit.list.model.ListModel
-import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
-import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
-import com.example.mvisampleapp.ui.model.User
+import com.example.circuitapp.Async
+import com.example.circuitapp.list.model.ListModel
+import com.example.circuitapp.list.screen.ListScreen
+import com.example.circuitapp.main.screen.MainScreen
+import com.example.circuitapp.produceAsync
+import com.example.domain.model.UserModel
+import com.example.domain.usecase.DeleteUserUseCase
+import com.example.domain.usecase.GetUserListFlowUseCase
+import com.example.presenter.feature.list.model.User
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -69,7 +70,7 @@ class ListScreenPresenter @AssistedInject constructor(
 
         return ListScreen.State(
             listModel = ListModel(
-                userList = userList,
+                userList = userList.toPersistentList(),
                 selectedUser = selectedUser,
             ),
         ) { event ->

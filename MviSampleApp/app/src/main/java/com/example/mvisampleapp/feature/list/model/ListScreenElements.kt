@@ -3,11 +3,13 @@ package com.example.mvisampleapp.feature.list.model
 import androidx.compose.runtime.Immutable
 import com.example.mvisampleapp.base.BaseEvent
 import com.example.mvisampleapp.base.BaseState
-import com.example.mvisampleapp.model.User
+import com.example.presenter.feature.list.model.User
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 
 class ListScreenElements {
     data class ListScreenState(
-        val userList: List<User> = emptyList(),
+        val userList: PersistentList<User> = persistentListOf(),
         val selectedUser: User? = null,
     ) : BaseState
 

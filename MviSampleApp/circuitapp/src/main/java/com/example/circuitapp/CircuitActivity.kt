@@ -12,11 +12,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.example.mvisampleapp.di.CircuitModule
-import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
-import com.example.mvisampleapp.ui.common.snackbar.LocalSnackBarEventController
-import com.example.mvisampleapp.ui.common.snackbar.rememberSnackBarEventController
-import com.example.mvisampleapp.ui.theme.MviSampleAppTheme
+import com.example.circuitapp.di.CircuitModule
+import com.example.circuitapp.main.screen.MainScreen
+import com.example.design_system.snackbar.LocalSnackBarEventController
+import com.example.design_system.snackbar.rememberSnackBarEventController
+import com.example.design_system.theme.MviSampleAppTheme
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.foundation.CircuitCompositionLocals

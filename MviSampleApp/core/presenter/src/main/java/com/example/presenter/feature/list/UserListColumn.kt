@@ -1,4 +1,4 @@
-package com.example.mvisampleapp.feature.list.components
+package com.example.presenter.feature.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -13,12 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.mvisampleapp.model.User
+import com.example.presenter.feature.list.model.User
+import kotlinx.collections.immutable.PersistentList
 
 @Composable
 fun UserListColumn(
     modifier: Modifier,
-    list: List<User>,
+    list: PersistentList<User>,
     onClick: (User) -> Unit,
 ) {
     LazyColumn(content = {

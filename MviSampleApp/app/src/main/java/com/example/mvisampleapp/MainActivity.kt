@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.design_system.theme.MviSampleAppTheme
 import com.example.mvisampleapp.feature.list.ListRoute
 import com.example.mvisampleapp.feature.main.MainRoute
-import com.example.mvisampleapp.theme.MviSampleAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

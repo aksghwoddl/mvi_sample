@@ -1,4 +1,4 @@
-package com.example.mvisampleapp.feature.main.components
+package com.example.presenter.feature.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +27,9 @@ fun UserInputField(
     keyboardType: KeyboardType = KeyboardType.Text,
     onTextChanged: (String) -> Unit,
 ) {
-    Box(modifier = modifier.padding(5.dp).fillMaxWidth()) {
+    Box(modifier = modifier
+        .padding(5.dp)
+        .fillMaxWidth()) {
         OutlinedTextField(
             modifier = modifier.align(Alignment.Center),
             placeholder = {
