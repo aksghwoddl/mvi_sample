@@ -90,13 +90,11 @@ internal fun MainScreen(
         verticalArrangement = Arrangement.Center,
     ) {
         UserInputField(
-            modifier = Modifier,
             input = state.name,
             hint = "이름",
             onTextChanged = onSetUserName
         )
         UserInputField(
-            modifier = Modifier,
             input = state.age,
             hint = "나이",
             keyboardType = KeyboardType.Number,
@@ -106,17 +104,14 @@ internal fun MainScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Row(
-            modifier = Modifier,
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             FunctionButton(
                 text = "저장하기",
-                modifier = Modifier,
                 onClick = onClickSaveButton
             )
             FunctionButton(
                 text = "목록",
-                modifier = modifier,
                 onClick = onClickListButton
             )
         }

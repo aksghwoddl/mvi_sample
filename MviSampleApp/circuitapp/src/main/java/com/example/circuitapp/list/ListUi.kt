@@ -34,7 +34,6 @@ fun List(
 
     if (showDeleteDialog) {
         CommonDialog(
-            modifier = modifier,
             icon = Icons.Default.Delete,
             dialogTitle = "삭제",
             dialogText = "유저를 삭제 하시겠습니까?",
@@ -61,7 +60,6 @@ fun List(
         verticalArrangement = Arrangement.Center,
     ) {
         UserListColumn(
-            modifier = modifier,
             list = state.listModel.userList,
         ) { item ->
             state.eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(item))
@@ -70,7 +68,6 @@ fun List(
 
         FunctionButton(
             text = "이전화면",
-            modifier = modifier,
         ) {
             state.eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
         }

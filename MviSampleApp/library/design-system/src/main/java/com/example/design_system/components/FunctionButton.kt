@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun FunctionButton(
+    modifier: Modifier = Modifier,
     text: String,
-    modifier: Modifier,
     onClick: () -> Unit,
 ) {
     Button(

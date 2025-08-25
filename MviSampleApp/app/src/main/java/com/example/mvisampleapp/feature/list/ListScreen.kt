@@ -60,7 +60,6 @@ fun ListRoute(
 
     if (showDeleteDialog) {
         CommonDialog(
-            modifier = modifier,
             icon = Icons.Default.Delete,
             dialogTitle = "삭제",
             dialogText = "유저를 삭제 하시겠습니까?",
@@ -79,6 +78,7 @@ fun ListRoute(
     }
 
     ListScreen(
+        modifier = modifier,
         state = state,
         onClickUser = { user ->
             viewModel.handleEvent(ListScreenElements.ListScreenEvent.OnClickUserItem(user))
@@ -103,14 +103,12 @@ internal fun ListScreen(
         verticalArrangement = Arrangement.Center,
     ) {
         UserListColumn(
-            modifier = modifier,
             list = state.userList,
             onClick = onClickUser
         )
 
         FunctionButton(
             text = "이전화면",
-            modifier = modifier,
             onClick = onClickBackButton
         )
     }

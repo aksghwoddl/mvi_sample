@@ -21,17 +21,19 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserInputField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     input: String,
     hint: String,
     keyboardType: KeyboardType = KeyboardType.Text,
     onTextChanged: (String) -> Unit,
 ) {
-    Box(modifier = modifier
-        .padding(5.dp)
-        .fillMaxWidth()) {
+    Box(
+        modifier = modifier
+            .padding(5.dp)
+            .fillMaxWidth()
+    ) {
         OutlinedTextField(
-            modifier = modifier.align(Alignment.Center),
+            modifier = Modifier.align(Alignment.Center),
             placeholder = {
                 Text(text = hint)
             },

@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 @Composable
 fun CommonDialog(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     icon: ImageVector,
     dialogTitle: String,
     dialogText: String,

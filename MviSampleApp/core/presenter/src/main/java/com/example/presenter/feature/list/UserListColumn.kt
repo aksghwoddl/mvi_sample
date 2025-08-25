@@ -18,29 +18,31 @@ import kotlinx.collections.immutable.PersistentList
 
 @Composable
 fun UserListColumn(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     list: PersistentList<User>,
     onClick: (User) -> Unit,
 ) {
-    LazyColumn(content = {
-        items(list) { user ->
-            Card(
-                modifier = modifier
-                    .clickable {
-                        onClick(user)
-                    },
-            ) {
-                Row(
-                    modifier = modifier.padding(10.dp),
+    LazyColumn(
+        modifier = modifier,
+        content = {
+            items(list) { user ->
+                Card(
+                    modifier = Modifier
+                        .clickable {
+                            onClick(user)
+                        },
                 ) {
-                    Text(text = "이름 : ${user.name}")
-                    Spacer(
-                        modifier = modifier.width(20.dp),
-                    )
-                    Text(text = "나이 : ${user.age}")
+                    Row(
+                        modifier = Modifier.padding(10.dp),
+                    ) {
+                        Text(text = "이름 : ${user.name}")
+                        Spacer(
+                            modifier = Modifier.width(20.dp),
+                        )
+                        Text(text = "나이 : ${user.age}")
+                    }
                 }
+                Spacer(modifier = Modifier.height(10.dp))
             }
-            Spacer(modifier = modifier.height(10.dp))
-        }
-    })
+        })
 }
