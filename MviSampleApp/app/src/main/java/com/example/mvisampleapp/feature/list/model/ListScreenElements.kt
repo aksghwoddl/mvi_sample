@@ -14,21 +14,24 @@ class ListScreenElements {
     ) : BaseState
 
     sealed interface ListScreenEvent : BaseEvent {
-        object OnClickPreviousButton : ListScreenEvent
+        data object OnClickPreviousButton : ListScreenEvent
         data class OnUpdateUserList(val userList: List<User>) : ListScreenEvent
         data class OnClickUserItem(val user: User) : ListScreenEvent
         data class OnClickDeleteButton(val user: User) : ListScreenEvent
+
+        data object OnClickDeleteAllButton : ListScreenEvent
     }
 
     @Immutable
     sealed interface ListScreenEffect {
         data class ShowSnackBar(val message: String) : ListScreenEffect
-        object MoveMainScreen : ListScreenEffect
-        object ShowDeleteDialog : ListScreenEffect
+        data object MoveMainScreen : ListScreenEffect
+        data object ShowDeleteDialog : ListScreenEffect
     }
 
     sealed interface ListScreenSideEffect {
-        object GetUserList : ListScreenSideEffect
+        data object GetUserList : ListScreenSideEffect
         data class DeleteUser(val user: User) : ListScreenSideEffect
+        data object DeleteAll : ListScreenSideEffect
     }
 }
