@@ -1,11 +1,11 @@
-package com.example.mvisampleapp.circuit.main
+package com.example.circuitapp.main
 
-import com.example.mvisampleapp.base.BaseTest
-import com.example.mvisampleapp.domain.usecase.AddUserUseCase
-import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
-import com.example.mvisampleapp.ui.circuit.main.presenter.MainScreenPresenter
-import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
-import com.example.mvisampleapp.utils.shouldBe
+import com.example.circuitapp.list.screen.ListScreen
+import com.example.circuitapp.main.presenter.MainScreenPresenter
+import com.example.circuitapp.main.screen.MainScreen
+import com.example.domain.usecase.AddUserUseCase
+import com.example.test.base.BaseTest
+import com.example.test.utils.shouldBe
 import com.slack.circuit.test.FakeNavigator
 import com.slack.circuit.test.test
 import io.mockk.coEvery
@@ -35,9 +35,9 @@ class MainScreenPresenterTest : BaseTest() {
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnSetUserName(name = "테스트"))
             awaitItem().eventSink(MainScreen.State.MainScreenEvent.OnClickAddUserButton)
 
-            testScheduler.advanceUntilIdle()
+            testScheduler.advanceUntilIdle() // 모든 이벤트가 소비 될때까지 대기
 
-            with(expectMostRecentItem()) {
+            with(expectMostRecentItem()) { // 가장 마지막 상태 아이템을 확인
                 mainModel.name shouldBe ""
                 mainModel.age shouldBe ""
             }

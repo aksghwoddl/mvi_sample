@@ -1,13 +1,13 @@
 package com.example.mvisampleapp.feature.list
 
-import app.cash.turbine.testIn
-import com.example.mvisampleapp.base.BaseTest
-import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
-import com.example.mvisampleapp.domain.usecase.GetUserListUseCase
+import app.cash.turbine.turbineScope
+import com.example.domain.usecase.DeleteUserUseCase
+import com.example.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.feature.list.model.ListScreenElements
 import com.example.mvisampleapp.feature.list.viewmodel.ListViewModel
-import com.example.mvisampleapp.model.User
-import com.example.mvisampleapp.utils.shouldBe
+import com.example.presenter.feature.list.model.User
+import com.example.test.base.BaseTest
+import com.example.test.utils.shouldBe
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -31,35 +31,40 @@ class ListViewModelTest : BaseTest() {
 
     @Test
     fun `OnDeleteButtonClick Event Test`() = runTest {
-        val state = viewModel.state.testIn(this)
-        val user = User(
-            name = "테스트",
-            age = 7
-        )
+        turbineScope {
+            val state = viewModel.state.testIn(this)
 
-        state.skipItems(1)
-
-        viewModel.handleEvent(
-            ListScreenElements.ListScreenEvent.OnUpdateUserList(
-                userList = listOf(user)
+            val user = User(
+                name = "테스트",
+                age = 7
             )
-        )
-        state.awaitItem().userList.size shouldBe 1
 
-        viewModel.handleEvent(
-            ListScreenElements.ListScreenEvent.OnClickUserItem(
-                user = user
+            state.skipItems(1)
+
+            viewModel.handleEvent(
+                ListScreenElements.ListScreenEvent.OnUpdateUserList(
+                    userList = listOf(user)
+                )
             )
-        )
-        state.awaitItem().selectedUser?.name shouldBe "테스트"
 
-        viewModel.handleEvent(
-            ListScreenElements.ListScreenEvent.OnClickDeleteButton(
-                user = user
+            state.awaitItem().userList.size shouldBe 1
+
+            viewModel.handleEvent(
+                ListScreenElements.ListScreenEvent.OnClickUserItem(
+                    user = user
+                )
             )
-        )
+            state.awaitItem().selectedUser?.name shouldBe "테스트"
 
-        state.awaitItem().selectedUser shouldBe null
-        state.cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
+            viewModel.handleEvent(
+                ListScreenElements.ListScreenEvent.OnClickDeleteButton(
+                    user = user
+                )
+            )
+
+            state.awaitItem().userList.size shouldBe 0
+            state.awaitItem().selectedUser shouldBe null
+            state.cancelAndConsumeRemainingEvents().isEmpty() shouldBe true
+        }
     }
 }

@@ -1,14 +1,14 @@
-package com.example.mvisampleapp.circuit.list
+package com.example.circuitapp.list
 
-import com.example.mvisampleapp.base.BaseTest
-import com.example.mvisampleapp.domain.model.UserModel
-import com.example.mvisampleapp.domain.usecase.DeleteUserUseCase
-import com.example.mvisampleapp.domain.usecase.GetUserListFlowUseCase
-import com.example.mvisampleapp.ui.circuit.list.presenter.ListScreenPresenter
-import com.example.mvisampleapp.ui.circuit.list.screen.ListScreen
-import com.example.mvisampleapp.ui.circuit.main.screen.MainScreen
-import com.example.mvisampleapp.model.User
-import com.example.mvisampleapp.utils.shouldBe
+import com.example.circuitapp.list.presenter.ListScreenPresenter
+import com.example.circuitapp.list.screen.ListScreen
+import com.example.circuitapp.main.screen.MainScreen
+import com.example.domain.model.UserModel
+import com.example.domain.usecase.DeleteUserUseCase
+import com.example.domain.usecase.GetUserListFlowUseCase
+import com.example.presenter.feature.list.model.User
+import com.example.test.base.BaseTest
+import com.example.test.utils.shouldBe
 import com.slack.circuit.test.FakeNavigator
 import com.slack.circuit.test.test
 import io.mockk.coEvery
@@ -34,9 +34,7 @@ class ListScreenPresenterTest : BaseTest() {
         coEvery {
             getUserListFlowUseCase()
         } returns flow {
-            emit(
-                listOf(userModel)
-            )
+            emit(listOf(userModel))
         }
 
         coEvery {
