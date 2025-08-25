@@ -22,6 +22,9 @@ room = "2.7.2"
 navigation = "2.9.3"
 circuit = "0.30.0"
 mockk = "1.14.5"
+appcompat = "1.7.1"
+material = "1.12.0"
+kotlin-immutable = "0.4.0"
 
 [libraries]
 # AndroidX / Compose
@@ -34,6 +37,7 @@ androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 
@@ -46,6 +50,8 @@ compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+kotlin-immutable = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-collections-immutable', version.ref = "kotlin-immutable" }
 
 # Test
 junit4 = { module = "junit:junit", version.ref = "junit4" }
@@ -79,6 +85,8 @@ circuit-test = { module = "com.slack.circuit:circuit-test", version.ref = "circu
 
 # Mocking
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -86,6 +94,17 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose-plugin = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-compose-plugin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-# kotlin-kapt와 kotlin-parcelize는 Kotlin 플러그인에 포함되어 별도 버전이 필요 없습니다.
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
+[bundles]
+
+unit-test = [
+    "junit4",
+    "robolectric",
+    "mockk",
+    "hilt-android-testing",
+    "coroutines-test",
+    "turbine"
+]

@@ -1,0 +1,22 @@
+package com.example.circuitapp.list.screen
+
+import com.example.circuitapp.list.model.ListModel
+import com.example.presenter.feature.list.model.User
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+object ListScreen : Screen {
+    data class State(
+        val listModel: ListModel,
+        val eventSink: (ListScreenEvent) -> Unit = {},
+    ) : CircuitUiState {
+        sealed interface ListScreenEvent : CircuitUiEvent {
+            object OnClickPreviousButton : ListScreenEvent
+            data class OnClickUserItem(val user: User) : ListScreenEvent
+            data class OnClickDeleteButton(val name: String, val age: Int) : ListScreenEvent
+        }
+    }
+}

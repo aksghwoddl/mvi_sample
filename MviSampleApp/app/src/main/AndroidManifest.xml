@@ -14,7 +14,7 @@
         android:theme="@style/Theme.MviSampleApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MviSampleApp">
@@ -22,12 +22,6 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.circuit.CircuitActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.MviSampleApp">
         </activity>
     </application>
 

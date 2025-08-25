@@ -12,11 +12,21 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
-    versionCatalogs {versionCatalogs {
-        create("libs")
-    }}
+    versionCatalogs {
+        versionCatalogs {
+            create("libs")
+        }
+    }
 }
 
 rootProject.name = "MviSampleApp"
 include(":app")
- 
+include(":circuitapp")
+include(":core")
+include(":core:data")
+include(":core:data-impl")
+include(":core:domain")
+include(":library")
+include(":library:test")
+include(":core:presenter")
+include(":library:design-system")
