@@ -3,6 +3,8 @@
 
 > MVI 아키택처에 대한 이해를 돕기위한 간단한 예제 앱 with Circuit
 
+[Circuit GitHub](https://github.com/slackhq/circuit) 
+
 <br>
 
 ### 💻 기술스택 
