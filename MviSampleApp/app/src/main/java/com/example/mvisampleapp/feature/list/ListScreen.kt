@@ -8,9 +8,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,8 +35,6 @@ fun ListRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
-
     LaunchedEffect(Unit) {
         viewModel.effect.collectLatest { effect ->
             when (effect) {
@@ -50,15 +45,11 @@ fun ListRoute(
                 is ListScreenElements.ListScreenEffect.MoveMainScreen -> {
                     navController.navigateUp()
                 }
-
-                is ListScreenElements.ListScreenEffect.ShowDeleteDialog -> {
-                    showDeleteDialog = true
-                }
             }
         }
     }
 
-    if (showDeleteDialog) {
+    if (state.isShowUserDeleteDialog) {
         CommonDialog(
             icon = Icons.Default.Delete,
             dialogTitle = "삭제",
@@ -66,13 +57,15 @@ fun ListRoute(
             onConfirmClick = {
                 state.selectedUser?.let { user ->
                     viewModel.handleEvent(
-                        ListScreenElements.ListScreenEvent.OnClickDeleteButton(user),
+                        ListScreenElements.ListScreenEvent.OnClickDeleteButton(
+                            user
+                        ),
                     )
-                    showDeleteDialog = false
+                    viewModel.handleEvent(ListScreenElements.ListScreenEvent.DismissUserDeleteDialog)
                 }
             },
             onCancelClick = {
-                showDeleteDialog = false
+                viewModel.handleEvent(ListScreenElements.ListScreenEvent.DismissUserDeleteDialog)
             },
         )
     }
@@ -82,6 +75,7 @@ fun ListRoute(
         state = state,
         onClickUser = { user ->
             viewModel.handleEvent(ListScreenElements.ListScreenEvent.OnClickUserItem(user))
+            viewModel.handleEvent(ListScreenElements.ListScreenEvent.ShowUserDeleteDialog)
         },
         onClickBackButton = {
             viewModel.handleEvent(ListScreenElements.ListScreenEvent.OnClickPreviousButton)

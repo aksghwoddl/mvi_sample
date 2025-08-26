@@ -11,24 +11,26 @@ class ListScreenElements {
     data class ListScreenState(
         val userList: PersistentList<User> = persistentListOf(),
         val selectedUser: User? = null,
+        val isShowUserDeleteDialog: Boolean = false,
     ) : BaseState
 
     sealed interface ListScreenEvent : BaseEvent {
-        object OnClickPreviousButton : ListScreenEvent
+        data object OnClickPreviousButton : ListScreenEvent
         data class OnUpdateUserList(val userList: List<User>) : ListScreenEvent
         data class OnClickUserItem(val user: User) : ListScreenEvent
         data class OnClickDeleteButton(val user: User) : ListScreenEvent
+        data object ShowUserDeleteDialog : ListScreenEvent
+        data object DismissUserDeleteDialog : ListScreenEvent
     }
 
     @Immutable
     sealed interface ListScreenEffect {
         data class ShowSnackBar(val message: String) : ListScreenEffect
-        object MoveMainScreen : ListScreenEffect
-        object ShowDeleteDialog : ListScreenEffect
+        data object MoveMainScreen : ListScreenEffect
     }
 
     sealed interface ListScreenSideEffect {
-        object GetUserList : ListScreenSideEffect
+        data object GetUserList : ListScreenSideEffect
         data class DeleteUser(val user: User) : ListScreenSideEffect
     }
 }

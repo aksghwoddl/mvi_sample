@@ -57,7 +57,6 @@ class ListViewModel @Inject constructor(
                         selectedUser = event.user,
                     )
                 }
-                sendEffect(ListScreenElements.ListScreenEffect.ShowDeleteDialog)
             }
 
             is ListScreenElements.ListScreenEvent.OnClickDeleteButton -> {
@@ -65,6 +64,23 @@ class ListViewModel @Inject constructor(
                 updateState {
                     it.copy(
                         selectedUser = null,
+                    )
+                }
+            }
+
+            is ListScreenElements.ListScreenEvent.ShowUserDeleteDialog -> {
+                updateState {
+                    it.copy(
+                        isShowUserDeleteDialog = true
+                    )
+                }
+            }
+
+            is ListScreenElements.ListScreenEvent.DismissUserDeleteDialog -> {
+                updateState {
+                    it.copy(
+                        selectedUser = null,
+                        isShowUserDeleteDialog = false
                     )
                 }
             }
