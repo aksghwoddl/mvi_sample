@@ -38,6 +38,7 @@ class ListScreenPresenter @AssistedInject constructor(
         }
 
         var selectedUser by rememberRetained { mutableStateOf<User?>(null) }
+        var isShowDeleteDialog by rememberRetained { mutableStateOf(false) }
 
         val userList by produceState(initialValue = emptyList()) {
             getUserListFlowUseCase().collect {
@@ -72,6 +73,7 @@ class ListScreenPresenter @AssistedInject constructor(
             listModel = ListModel(
                 userList = userList.toPersistentList(),
                 selectedUser = selectedUser,
+                isShowDeleteDialog = isShowDeleteDialog
             ),
         ) { event ->
             when (event) {
@@ -81,10 +83,15 @@ class ListScreenPresenter @AssistedInject constructor(
 
                 is ListScreen.State.ListScreenEvent.OnClickUserItem -> {
                     selectedUser = event.user
+                    isShowDeleteDialog = true
                 }
 
                 is ListScreen.State.ListScreenEvent.OnClickDeleteButton -> {
                     deleteUserState = Async.Loading
+                }
+
+                is ListScreen.State.ListScreenEvent.DismissDeleteDialog -> {
+                    isShowDeleteDialog = false
                 }
             }
         }

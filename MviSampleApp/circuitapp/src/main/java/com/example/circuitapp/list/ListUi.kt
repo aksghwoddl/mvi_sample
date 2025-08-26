@@ -8,9 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,28 +26,25 @@ fun List(
     state: ListScreen.State,
     modifier: Modifier = Modifier,
 ) {
-    var showDeleteDialog by rememberSaveable {
-        mutableStateOf(false)
-    }
-
-    if (showDeleteDialog) {
+    val eventSink by rememberUpdatedState(state.eventSink)
+    if (state.listModel.isShowDeleteDialog) {
         CommonDialog(
             icon = Icons.Default.Delete,
             dialogTitle = "삭제",
             dialogText = "정말 삭제 하시겠습니까?",
             onConfirmClick = {
                 state.listModel.selectedUser?.let { user ->
-                    state.eventSink(
+                    eventSink(
                         ListScreen.State.ListScreenEvent.OnClickDeleteButton(
                             name = user.name,
                             age = user.age
                         )
                     )
-                    showDeleteDialog = false
+                    eventSink(ListScreen.State.ListScreenEvent.DismissDeleteDialog)
                 }
             },
             onCancelClick = {
-                showDeleteDialog = false
+                eventSink(ListScreen.State.ListScreenEvent.DismissDeleteDialog)
             },
         )
     }
@@ -62,19 +57,18 @@ fun List(
         UserListColumn(
             list = state.listModel.userList,
         ) { item ->
-            state.eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(item))
-            showDeleteDialog = true
+            eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(item))
         }
 
         FunctionButton(
             text = "이전화면",
         ) {
-            state.eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
+            eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
         }
     }
 
     BackHandler {
-        state.eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
+        eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
     }
 }
 

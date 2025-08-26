@@ -17,6 +17,8 @@ object ListScreen : Screen {
             object OnClickPreviousButton : ListScreenEvent
             data class OnClickUserItem(val user: User) : ListScreenEvent
             data class OnClickDeleteButton(val name: String, val age: Int) : ListScreenEvent
+
+            data object DismissDeleteDialog : ListScreenEvent
         }
     }
 }

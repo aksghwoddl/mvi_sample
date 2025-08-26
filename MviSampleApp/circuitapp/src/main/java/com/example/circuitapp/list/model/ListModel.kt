@@ -9,6 +9,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class ListModel(
     val userList: PersistentList<User>,
     val selectedUser: User?,
+    val isShowDeleteDialog: Boolean = false,
 ) {
     companion object {
         val placeHolder = ListModel(
