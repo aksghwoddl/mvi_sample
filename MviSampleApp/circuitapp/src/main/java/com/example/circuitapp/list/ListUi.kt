@@ -36,7 +36,7 @@ fun List(
         CommonDialog(
             icon = Icons.Default.Delete,
             dialogTitle = "삭제",
-            dialogText = "유저를 삭제 하시겠습니까?",
+            dialogText = "정말 삭제 하시겠습니까?",
             onConfirmClick = {
                 state.listModel.selectedUser?.let { user ->
                     state.eventSink(
