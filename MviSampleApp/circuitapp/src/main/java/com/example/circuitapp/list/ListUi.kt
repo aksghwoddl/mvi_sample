@@ -27,7 +27,31 @@ fun List(
     modifier: Modifier = Modifier,
 ) {
     val eventSink by rememberUpdatedState(state.eventSink)
-    if (state.listModel.isShowDeleteDialog) {
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        UserListColumn(
+            list = state.listModel.userList,
+        ) { item ->
+            eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(item))
+            eventSink(ListScreen.State.ListScreenEvent.ShowUserDeleteDialog)
+        }
+
+        FunctionButton(
+            text = "이전화면",
+        ) {
+            eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
+        }
+    }
+
+    BackHandler {
+        eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
+    }
+
+    if (state.listModel.isShowUserDeleteDialog) {
         CommonDialog(
             icon = Icons.Default.Delete,
             dialogTitle = "삭제",
@@ -40,35 +64,12 @@ fun List(
                             age = user.age
                         )
                     )
-                    eventSink(ListScreen.State.ListScreenEvent.DismissDeleteDialog)
                 }
             },
             onCancelClick = {
-                eventSink(ListScreen.State.ListScreenEvent.DismissDeleteDialog)
+                eventSink(ListScreen.State.ListScreenEvent.DismissUserDeleteDialog)
             },
         )
-    }
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        UserListColumn(
-            list = state.listModel.userList,
-        ) { item ->
-            eventSink(ListScreen.State.ListScreenEvent.OnClickUserItem(item))
-        }
-
-        FunctionButton(
-            text = "이전화면",
-        ) {
-            eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
-        }
-    }
-
-    BackHandler {
-        eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
     }
 }
 
