@@ -72,6 +72,20 @@ fun ListRoute(
         )
     }
 
+    if (state.isShowAllUserDeleteDialog) {
+        CommonDialog(
+            icon = Icons.Default.Delete,
+            dialogTitle = "전체삭제",
+            dialogText = "모든 유저를 삭제 하시겠습니까?",
+            onConfirmClick = {
+                viewModel.handleEvent(ListScreenElements.ListScreenEvent.OnClickDeleteAllConfirmButton)
+            },
+            onCancelClick = {
+                viewModel.handleEvent(ListScreenElements.ListScreenEvent.OnClickDeleteAllCancelButton)
+            },
+        )
+    }
+
     ListScreen(
         modifier = modifier,
         state = state,

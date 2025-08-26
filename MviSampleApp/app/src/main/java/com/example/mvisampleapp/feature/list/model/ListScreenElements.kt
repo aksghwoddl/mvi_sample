@@ -12,16 +12,20 @@ class ListScreenElements {
         val userList: PersistentList<User> = persistentListOf(),
         val selectedUser: User? = null,
         val isShowUserDeleteDialog: Boolean = false,
+        val isShowAllUserDeleteDialog: Boolean = false,
     ) : BaseState
 
     sealed interface ListScreenEvent : BaseEvent {
         data object OnClickPreviousButton : ListScreenEvent
         data class OnUpdateUserList(val userList: List<User>) : ListScreenEvent
         data class OnClickUserItem(val user: User) : ListScreenEvent
-        data class OnClickDeleteButton(val user: User) : ListScreenEventdata object ShowUserDeleteDialog : ListScreenEvent
+        data class OnClickDeleteButton(val user: User) : ListScreenEvent
         data object ShowUserDeleteDialog : ListScreenEvent
         data object DismissUserDeleteDialog : ListScreenEvent
         data object OnClickDeleteAllButton : ListScreenEvent
+
+        data object OnClickDeleteAllConfirmButton : ListScreenEvent
+        data object OnClickDeleteAllCancelButton : ListScreenEvent
     }
 
     @Immutable

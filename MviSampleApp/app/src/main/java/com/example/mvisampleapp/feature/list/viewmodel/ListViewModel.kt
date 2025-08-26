@@ -88,7 +88,28 @@ class ListViewModel @Inject constructor(
             }
 
             is ListScreenElements.ListScreenEvent.OnClickDeleteAllButton -> {
+                updateState {
+                    it.copy(
+                        isShowAllUserDeleteDialog = true
+                    )
+                }
+            }
+
+            is ListScreenElements.ListScreenEvent.OnClickDeleteAllConfirmButton -> {
                 handleSideEffect(ListScreenElements.ListScreenSideEffect.DeleteAll)
+                updateState {
+                    it.copy(
+                        isShowAllUserDeleteDialog = false
+                    )
+                }
+            }
+
+            is ListScreenElements.ListScreenEvent.OnClickDeleteAllCancelButton -> {
+                updateState {
+                    it.copy(
+                        isShowAllUserDeleteDialog = false
+                    )
+                }
             }
         }
     }
