@@ -3,6 +3,7 @@ package com.example.circuitapp.list
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -12,6 +13,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.circuitapp.list.model.ListModel
 import com.example.circuitapp.list.screen.ListScreen
 import com.example.design_system.components.FunctionButton
@@ -40,10 +42,19 @@ fun List(
             eventSink(ListScreen.State.ListScreenEvent.ShowUserDeleteDialog)
         }
 
-        FunctionButton(
-            text = "이전화면",
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
+            FunctionButton(
+                text = "전체삭제",
+            ) {
+                eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteAllButton)
+            }
+            FunctionButton(
+                text = "이전화면",
+            ) {
+                eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
+            }
         }
     }
 
@@ -68,6 +79,20 @@ fun List(
             },
             onCancelClick = {
                 eventSink(ListScreen.State.ListScreenEvent.DismissUserDeleteDialog)
+            },
+        )
+    }
+
+    if (state.listModel.isShowDeleteAllUserDialog) {
+        CommonDialog(
+            icon = Icons.Default.Delete,
+            dialogTitle = "전체삭제",
+            dialogText = "모든 유저를 삭제하시겠습니까?",
+            onConfirmClick = {
+                eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteAllConfirmButton)
+            },
+            onCancelClick = {
+                eventSink(ListScreen.State.ListScreenEvent.OnClickDeleteAllCancelButton)
             },
         )
     }

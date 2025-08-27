@@ -10,6 +10,7 @@ data class ListModel(
     val userList: PersistentList<User>,
     val selectedUser: User?,
     val isShowUserDeleteDialog: Boolean = false,
+    val isShowDeleteAllUserDialog: Boolean = false,
 ) {
     companion object {
         val placeHolder = ListModel(

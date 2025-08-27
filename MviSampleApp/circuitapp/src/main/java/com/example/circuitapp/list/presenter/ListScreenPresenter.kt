@@ -1,9 +1,11 @@
 package com.example.circuitapp.list.presenter
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.example.circuitapp.Async
 import com.example.circuitapp.list.model.ListModel
@@ -11,6 +13,7 @@ import com.example.circuitapp.list.screen.ListScreen
 import com.example.circuitapp.main.screen.MainScreen
 import com.example.circuitapp.produceAsync
 import com.example.domain.model.UserModel
+import com.example.domain.usecase.DeleteAllUserUseCase
 import com.example.domain.usecase.DeleteUserUseCase
 import com.example.domain.usecase.GetUserListFlowUseCase
 import com.example.presenter.feature.list.model.User
@@ -22,6 +25,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private const val TAG = "ListScreenPresenter"
@@ -30,15 +34,18 @@ class ListScreenPresenter @AssistedInject constructor(
     @Assisted val navigator: Navigator,
     private val getUserListFlowUseCase: GetUserListFlowUseCase,
     private val deleteUserUseCase: DeleteUserUseCase,
+    private val deleteAllUserUseCase: DeleteAllUserUseCase,
 ) : Presenter<ListScreen.State> {
     @Composable
     override fun present(): ListScreen.State {
+        val scope = rememberCoroutineScope()
         var deleteUserState: Async<Unit> by rememberRetained {
             mutableStateOf(Async.None)
         }
 
         var selectedUser by rememberRetained { mutableStateOf<User?>(null) }
         var isShowUserDeleteDialog by rememberRetained { mutableStateOf(false) }
+        var isShowDeleteAllDialog by rememberRetained { mutableStateOf(false) }
 
         val userList by produceState(initialValue = emptyList()) {
             getUserListFlowUseCase().collect {
@@ -73,7 +80,8 @@ class ListScreenPresenter @AssistedInject constructor(
             listModel = ListModel(
                 userList = userList.toPersistentList(),
                 selectedUser = selectedUser,
-                isShowUserDeleteDialog = isShowUserDeleteDialog
+                isShowUserDeleteDialog = isShowUserDeleteDialog,
+                isShowDeleteAllUserDialog = isShowDeleteAllDialog,
             ),
         ) { event ->
             when (event) {
@@ -98,6 +106,25 @@ class ListScreenPresenter @AssistedInject constructor(
                 is ListScreen.State.ListScreenEvent.DismissUserDeleteDialog -> {
                     selectedUser = null
                     isShowUserDeleteDialog = false
+                }
+
+                is ListScreen.State.ListScreenEvent.OnClickDeleteAllButton -> {
+                    isShowDeleteAllDialog = true
+                }
+
+                is ListScreen.State.ListScreenEvent.OnClickDeleteAllConfirmButton -> {
+                    scope.launch {
+                        runCatching {
+                            deleteAllUserUseCase()
+                        }.onFailure { throwable ->
+                            Log.e(TAG, "${throwable.message}")
+                        }
+                        isShowDeleteAllDialog = false
+                    }
+                }
+
+                is ListScreen.State.ListScreenEvent.OnClickDeleteAllCancelButton -> {
+                    isShowDeleteAllDialog = false
                 }
             }
         }
