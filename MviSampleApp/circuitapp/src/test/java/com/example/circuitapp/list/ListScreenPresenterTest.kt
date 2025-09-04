@@ -4,6 +4,7 @@ import com.example.circuitapp.list.presenter.ListScreenPresenter
 import com.example.circuitapp.list.screen.ListScreen
 import com.example.circuitapp.main.screen.MainScreen
 import com.example.domain.model.UserModel
+import com.example.domain.usecase.DeleteAllUserUseCase
 import com.example.domain.usecase.DeleteUserUseCase
 import com.example.domain.usecase.GetUserListFlowUseCase
 import com.example.presenter.feature.list.model.User
@@ -23,6 +24,9 @@ class ListScreenPresenterTest : BaseTest() {
 
     @MockK
     lateinit var getUserListFlowUseCase: GetUserListFlowUseCase
+
+    @MockK
+    lateinit var deleteAllUserUseCase: DeleteAllUserUseCase
 
     @Test
     fun `OnClickDeleteUserList Event Test`() = runTest {
@@ -47,7 +51,8 @@ class ListScreenPresenterTest : BaseTest() {
         ListScreenPresenter(
             navigator = FakeNavigator(ListScreen),
             deleteUserUseCase = deleteUserUseCase,
-            getUserListFlowUseCase = getUserListFlowUseCase
+            getUserListFlowUseCase = getUserListFlowUseCase,
+            deleteAllUserUseCase = deleteAllUserUseCase,
         ).test {
             awaitItem().eventSink(
                 ListScreen.State.ListScreenEvent.OnClickUserItem(
@@ -77,7 +82,8 @@ class ListScreenPresenterTest : BaseTest() {
         ListScreenPresenter(
             navigator = navigator,
             deleteUserUseCase = deleteUserUseCase,
-            getUserListFlowUseCase = getUserListFlowUseCase
+            getUserListFlowUseCase = getUserListFlowUseCase,
+            deleteAllUserUseCase = deleteAllUserUseCase,
         ).test {
             awaitItem().eventSink(ListScreen.State.ListScreenEvent.OnClickPreviousButton)
             navigator.awaitNextScreen() shouldBe MainScreen

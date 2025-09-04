@@ -1,6 +1,7 @@
 package com.example.mvisampleapp.feature.list
 
 import app.cash.turbine.turbineScope
+import com.example.domain.usecase.DeleteAllUserUseCase
 import com.example.domain.usecase.DeleteUserUseCase
 import com.example.domain.usecase.GetUserListUseCase
 import com.example.mvisampleapp.feature.list.model.ListScreenElements
@@ -19,13 +20,17 @@ class ListViewModelTest : BaseTest() {
     @MockK
     lateinit var getUserListUseCase: GetUserListUseCase
 
+    @MockK
+    lateinit var deleteAllUserUseCase: DeleteAllUserUseCase
+
     private lateinit var viewModel: ListViewModel
 
     override fun setup() {
         super.setup()
         viewModel = ListViewModel(
             deleteUserUseCase = deleteUserUseCase,
-            getUserListUseCase = getUserListUseCase
+            getUserListUseCase = getUserListUseCase,
+            deleteAllUserUseCase = deleteAllUserUseCase,
         )
     }
 
